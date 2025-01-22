@@ -1,7 +1,9 @@
 let token = '';  // Store JWT Token after login
 let isSpinning = false;  // Flag to track spinning state
 let inventory = [];  // Declare inventory globally
+let isDragging = false;
 
+// Login form submission
 document.getElementById('login').addEventListener('submit', function(e) {
     e.preventDefault();
     const username = document.getElementById('username').value;
@@ -9,6 +11,7 @@ document.getElementById('login').addEventListener('submit', function(e) {
     login(username, password);
 });
 
+// Create account form submission
 document.getElementById('create-account').addEventListener('submit', function(e) {
     e.preventDefault();
     const username = document.getElementById('new-username').value;
@@ -16,10 +19,12 @@ document.getElementById('create-account').addEventListener('submit', function(e)
     createAccount(username, password);
 });
 
+// Logout button event listener
 document.getElementById('logout-button').addEventListener('click', function() {
     logout();
 });
 
+// Spin button event listener
 document.getElementById('spin-button').addEventListener('click', function() {
     if (!isSpinning) {
         spinSlotMachine();
@@ -55,12 +60,6 @@ window.onload = function() {
         document.getElementById('login-form').style.display = 'block';
     }
 };
-
-// Add an inventory tab to show/hide inventory list
-document.getElementById('inventory-tab').addEventListener('click', function() {
-    const inventoryContainer = document.getElementById('inventory-container');
-    inventoryContainer.style.display = inventoryContainer.style.display === 'none' ? 'block' : 'none';
-});
 
 // Login function
 function login(username, password) {
@@ -125,7 +124,7 @@ function getRarityColor(rarity) {
     }
 }
 
-// Fetch User Inventory from the server
+// Get User Inventory from the server
 function getUserInventory() {
     const token = localStorage.getItem('token'); // Retrieve the token from localStorage
     if (!token) {
@@ -136,18 +135,11 @@ function getUserInventory() {
     fetch('/inventory', {
         method: 'GET',
         headers: {
-            'Authorization': 'Bearer ' + token
+            'Authorization': `Bearer ${token}`
         }
     })
-    .then(res => {
-        if (!res.ok) {
-            // If the response status code is not in the 2xx range, throw an error
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-    })
+    .then(res => res.json())
     .then(data => {
-        console.log("Fetched inventory data:", data);  // Log the response data
         if (data.error) {
             console.error("Error fetching inventory:", data.error);
             return;
@@ -162,6 +154,81 @@ function getUserInventory() {
     .catch(err => {
         console.error('Error fetching inventory:', err);
     });
+}
+
+// Add Card to Inventory
+function addCardToInventory(cardData) {
+    const token = localStorage.getItem('token'); // Get the token from local storage
+
+    if (!token) {
+        console.error("No token found, user is not authenticated.");
+        return;
+    }
+
+    fetch('http://localhost:3000/addCardToInventory', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`  // Fix: use backticks for template literals
+        },
+        body: JSON.stringify({ cardId: cardData.id })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log("Card added to inventory:", data.card);
+            inventory.push(data.card); // Add the card to the inventory
+        } else {
+            console.error("Error adding card to inventory:", data.error);
+        }
+    })
+    .catch(err => {
+        console.error("Error adding card to inventory:", err);
+    });
+}
+
+// Ensure card elements exist before applying event listeners
+function addRotationEvents(cardElement) {
+    let startX, startY, rotateX = 0, rotateY = 0;
+
+    // Check if cardElement is not null before adding event listeners
+    if (cardElement) {
+        cardElement.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            startX = e.clientX;
+            startY = e.clientY;
+            cardElement.style.transition = 'none';  // Remove transition during dragging
+            isDragging = true;  // Set dragging state to true
+        });
+
+        cardElement.addEventListener('mousemove', function(e) {
+            if (isDragging && startX && startY) {
+                const deltaX = e.clientX - startX;
+                const deltaY = e.clientY - startY;
+
+                // Apply 3D rotation based on mouse movement (inverted directions)
+                rotateX -= deltaY * 3; // Reverse sensitivity to vertical movement
+                rotateY += deltaX * 3; // Reverse sensitivity to horizontal movement
+                cardElement.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                startX = e.clientX;
+                startY = e.clientY;
+            }
+        });
+
+        cardElement.addEventListener('mouseup', function() {
+            cardElement.style.transition = 'transform 0.3s ease-in-out';  // Add smooth transition after mouse release
+            isDragging = false;  // Reset dragging state
+        });
+
+        cardElement.addEventListener('mouseleave', function() {
+            // Reset rotation to 0 degrees when mouse leaves
+            rotateX = 0;
+            rotateY = 0;
+            cardElement.style.transition = 'transform 0.3s ease-in-out';  // Smooth transition back to original position
+            cardElement.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            isDragging = false;  // Reset dragging state
+        });
+    }
 }
 
 // Display Inventory
@@ -191,6 +258,8 @@ function displayInventory(cards) {
                     </div>
                 `;
                 inventoryList.appendChild(cardElement);
+                // Add drag events to the card
+                addRotationEvents(cardElement);
             } else {
                 console.error("Card format is invalid:", card);  // Log any invalid card format
             }
@@ -200,71 +269,6 @@ function displayInventory(cards) {
     }
 }
 
-// Function to add card to inventory
-function addCardToInventory(cardData) {
-    const token = localStorage.getItem('token'); // Get the token from local storage
-
-    // Make sure the token exists before proceeding
-    if (!token) {
-        console.error("No token found, user is not authenticated.");
-        return;
-    }
-
-    // Send the request to the server to add the card to the user's inventory
-    fetch('http://localhost:3000/addCardToInventory', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ cardId: cardData.id })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            console.log("Card added to inventory:", data.card);
-            inventory.push(data.card); // Add the card to the inventory
-        } else {
-            console.error("Error adding card to inventory:", data.error);
-        }
-    })
-    .catch(err => {
-        console.error("Error adding card to inventory:", err);
-    });
-}
-
-let startX, startY, startRotationX = 0, startRotationY = 0;
-let isDragging = false;
-
-document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        startX = e.clientX;
-        startY = e.clientY;
-    });
-
-    card.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-            const deltaX = e.clientX - startX;
-            const deltaY = e.clientY - startY;
-
-            startRotationX += deltaY / 3;  // Adjust the sensitivity of X-axis rotation
-            startRotationY -= deltaX / 3;  // Adjust the sensitivity of Y-axis rotation
-
-            card.querySelector('.card-inner').style.transform = `rotateX(${startRotationX}deg) rotateY(${startRotationY}deg)`;
-        }
-    });
-
-    card.addEventListener('mouseup', () => {
-        isDragging = false;
-    });
-
-    card.addEventListener('mouseleave', () => {
-        isDragging = false;
-    });
-});
-
-// Spin Slot Machine function
 function spinSlotMachine() {
     isSpinning = true;  // Set spinning flag to true
     const slotMachine = document.getElementById('slot-machine');
@@ -290,7 +294,6 @@ function spinSlotMachine() {
     })
     .then(res => res.json())
     .then(response => {
-        console.log("Fetched card data:", response);  // Log the card data
         if (response.error) {
             console.error("Error fetching cards:", response.error);
             isSpinning = false;
@@ -308,13 +311,24 @@ function spinSlotMachine() {
         randomCards.forEach(card => {
             const cardElement = document.createElement('div');
             cardElement.classList.add('card');
-            cardElement.innerHTML = `<p>${card.name}</p><p>${card.rarity}</p>`;
+
+            // Set the background color based on rarity
+            const rarityColor = getRarityColor(card.rarity);
+            cardElement.style.borderLeft = `10px solid ${rarityColor}`;
+
+            // Add card details to the card element
+            cardElement.innerHTML = `
+                <div class="card-content">
+                    <p><strong>Name:</strong> ${card.name}</p>
+                    <p><strong>Rarity:</strong> ${card.rarity}</p>
+                    <p><strong>Type:</strong> ${card.type}</p>
+                    <p><strong>Power:</strong> ${card.power}</p>
+                    <p><strong>Toughness:</strong> ${card.toughness}</p>
+                    <p><strong>Cost:</strong> ${card.cost}</p>
+                </div>
+            `;
             cardContainer.appendChild(cardElement);
         });
-
-        // Reset the card container's transform property
-        cardContainer.style.transition = 'none';  // Disable transition temporarily
-        cardContainer.style.transform = 'translateX(0)';  // Start from the beginning
 
         // Add the tab to the center of the spin area
         const tab = document.createElement('div');
@@ -327,13 +341,11 @@ function spinSlotMachine() {
         const spinDuration = 3;  // Duration of the spin in seconds
 
         // Set the card-container's transform property to simulate a spin
-        const spinAmount = Math.floor(Math.random() * (numCards - 1)) + 1;  // Random spin distance, ensuring we don't go past the cards
+        const spinAmount = Math.floor(Math.random() * 10) + 5;  // Random spin distance
 
         // Apply the animation (scrolling the card-container)
-        setTimeout(() => {
-            cardContainer.style.transition = `${spinDuration}s ease-out`;  // Re-enable the transition with smooth easing
-            cardContainer.style.transform = `translateX(-${spinAmount * 120}px)`;  // Move the cards left by `spinAmount` units
-        }, 100);  // Delay the transform change to make sure the reset happens
+        cardContainer.style.transitionDuration = `${spinDuration}s`;  // Make the transition smooth
+        cardContainer.style.transform = `translateX(-${spinAmount * 100}px)`;  // Move the cards left by `spinAmount` units
 
         // After the spin ends, show the final "stopped" card
         setTimeout(() => {
@@ -354,7 +366,6 @@ function spinSlotMachine() {
     });
 }
 
-// Get Random Cards (select a few cards to spin through)
 function getRandomCards(cards) {
     const randomCards = [];
     const numberOfCards = 10;  // How many cards to show in the "slot machine"
@@ -367,7 +378,6 @@ function getRandomCards(cards) {
     return randomCards;
 }
 
-// Show Final Card (after spinning ends)
 function showFinalCard(card) {
     const cardContainer = document.getElementById('slot-machine').querySelector('.card-container');
     cardContainer.innerHTML = '';  // Clear previous cards

@@ -1,13 +1,10 @@
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    flex-direction: column;
+html, body {
+    height: 100%; /* Ensure the body takes up full viewport height */
+    margin: 0;    /* Remove default margin */
+    display: flex; /* Use flexbox for centering content */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    background-color: #f4f4f4; /* Light background color */
 }
 
 h2, h3 {
@@ -19,13 +16,15 @@ h2, h3 {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100vw;  /* Full screen width */
-    height: 100vh; /* Full screen height */
-    margin: 0;
+    width: 80vw; /* Adjust width to a larger size */
+    max-width: 500px; /* Set a max width to avoid it getting too wide */
+    height: 80vh; /* Set a height to make it take up most of the viewport */
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column; /* Stack form elements vertically */
+    justify-content: center; /* Vertically center the content */
+    align-items: center; /* Horizontally center the content */
+    text-align: center;
+    margin: 0; /* Remove default margin */
 }
 
 input, select, button {
@@ -49,19 +48,22 @@ button:hover {
 /* User Dashboard */
 #user-dashboard {
     display: none;
-    width: 100vw;
-    height: 100vh;
-    padding: 10px;
-    box-sizing: border-box;
 }
 
-/* Inventory in Grid Pattern */
+#inventory-container {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
 #inventory-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
-    padding: 0;
-    list-style: none;
 }
 
 .card-container {
@@ -70,90 +72,58 @@ button:hover {
 }
 
 .card {
-    width: 120px;
-    height: 180px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    text-align: center;
-    background-color: #f9f9f9;
-    overflow: hidden;
     position: relative;
-    font-size: 12px;  /* Smaller text to fit inside the card */
-    word-wrap: break-word;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #333;
-    cursor: pointer;
-    perspective: 1000px; /* Required for 3D effect */
+    width: 200px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.card-content {
+    padding: 10px;
+    max-height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .card p {
-    word-wrap: break-word;
-    text-overflow: ellipsis;
+    margin: 5px 0;
 }
 
-/* 3D Rotation */
-.card-inner {
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.6s;
-    position: relative;
-}
-
-.card:hover .card-inner {
-    transform: rotateY(180deg); /* Flip on hover */
-}
-
-.card-back {
+.card .rarity {
     position: absolute;
     top: 0;
     left: 0;
+    height: 5px;
     width: 100%;
-    height: 100%;
-    background-color: #007bff;  /* Blue background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 18px;
-    border-radius: 8px;
-    transform: rotateY(180deg); /* Initially hidden behind the front */
-}
-
-.card-front {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #f9f9f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 12px; /* Smaller text size */
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 /* Slot Machine */
 #slot-machine {
-    width: 100vw;
-    height: 100vh;
+    width: 350px;
+    height: 200px; /* Adjusted height for better balance */
     overflow: hidden;
     position: relative;
+    margin-bottom: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 #slot-machine .card {
-    width: 120px;
+    width: 100px; /* Reduced width for smaller cards */
+    height: 150px; /* Reduced height for better fitting */
     transition: transform 0.3s ease-in-out;
+    margin: 0 5px; /* Added spacing between cards */
 }
 
 #spin-button {
+    position: relative;
     background-color: #28a745;
     padding: 10px 20px;
     font-size: 16px;
@@ -165,16 +135,7 @@ button:hover {
     background-color: #218838;
 }
 
-/* Center Tab (Arrow) */
-.arrow-tab {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    font-size: 32px;
-    color: #333;
-}
-
-/* Final Card Display (When spin is over) */
+/* Final Card Display */
 .card-info {
     text-align: center;
     margin-top: 20px;
@@ -182,4 +143,23 @@ button:hover {
     background-color: rgba(0, 0, 0, 0.2);
     color: white;
     border-radius: 5px;
+}
+
+/* Card container style for slot machine */
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px; /* Space between the cards */
+}
+
+/* Slot machine arrow (tab) */
+.arrow-tab {
+    position: fixed; /* Use fixed positioning to position it relative to the viewport */
+    bottom: 200px; /* Adjust the distance from the bottom of the viewport */
+    left: 50%; /* Position it horizontally at the center */
+    font-size: 32px;
+    color: #333;
+    transform: translateX(-50%) rotate(180deg); /* Move it left by 50% of its width and rotate */
+    z-index: 1000; /* Ensure it appears on top of other elements */
 }
