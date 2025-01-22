@@ -1,0 +1,185 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+
+h2, h3 {
+    text-align: center;
+}
+
+#login-form, #create-account-form, #user-dashboard {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100vw;  /* Full screen width */
+    height: 100vh; /* Full screen height */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* User Dashboard */
+#user-dashboard {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Inventory in Grid Pattern */
+#inventory-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    padding: 0;
+    list-style: none;
+}
+
+.card-container {
+    display: flex;
+    transition: transform 2s ease-out;
+}
+
+.card {
+    width: 120px;
+    height: 180px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    background-color: #f9f9f9;
+    overflow: hidden;
+    position: relative;
+    font-size: 12px;  /* Smaller text to fit inside the card */
+    word-wrap: break-word;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    cursor: pointer;
+    perspective: 1000px; /* Required for 3D effect */
+}
+
+.card p {
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+}
+
+/* 3D Rotation */
+.card-inner {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    position: relative;
+}
+
+.card:hover .card-inner {
+    transform: rotateY(180deg); /* Flip on hover */
+}
+
+.card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #007bff;  /* Blue background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    border-radius: 8px;
+    transform: rotateY(180deg); /* Initially hidden behind the front */
+}
+
+.card-front {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px; /* Smaller text size */
+    border-radius: 8px;
+}
+
+/* Slot Machine */
+#slot-machine {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#slot-machine .card {
+    width: 120px;
+    transition: transform 0.3s ease-in-out;
+}
+
+#spin-button {
+    background-color: #28a745;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#spin-button:hover {
+    background-color: #218838;
+}
+
+/* Center Tab (Arrow) */
+.arrow-tab {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 32px;
+    color: #333;
+}
+
+/* Final Card Display (When spin is over) */
+.card-info {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+    border-radius: 5px;
+}

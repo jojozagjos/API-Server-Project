@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Login and Card Spin</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Login Form -->
+<div id="login-form">
+    <h2>Login</h2>
+    <form id="login">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="javascript:void(0)" onclick="showCreateAccount()">Create one</a></p>
+</div>
+
+<!-- Create Account Form -->
+<div id="create-account-form" style="display: none;">
+    <h2>Create Account</h2>
+    <form id="create-account">
+        <label for="new-username">Username:</label>
+        <input type="text" id="new-username" name="username" required><br><br>
+
+        <label for="new-password">Password:</label>
+        <input type="password" id="new-password" name="password" required><br><br>
+
+        <button type="submit">Create Account</button>
+    </form>
+    <p>Already have an account? <a href="javascript:void(0)" onclick="showLogin()">Login</a></p>
+</div>
+
+<!-- User Dashboard (after login) -->
+<div id="user-dashboard" style="display: none;">
+    <h2>Welcome, <span id="username-display"></span>!</h2>
+
+    <!-- Logout button -->
+    <button id="logout-button" class="logout-button">Logout</button>
+
+    <!-- Inventory Section -->
+    <h3>Your Inventory:</h3>
+    <div id="inventory-container">
+        <div id="inventory-list"></div>
+    </div>
+
+    <!-- Spin Section -->
+    <div id="spin-container">
+        <h2>Spin to Open a Card</h2>
+        <div id="slot-machine">
+            <div class="card-container">
+                <!-- Cards will be appended here dynamically -->
+            </div>
+            <!-- Arrow Tab to show center of spin -->
+            <div class="arrow-tab">&#8595;</div>
+        </div>
+        <button id="spin-button">Spin to Get a Card</button>
+    </div>    
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

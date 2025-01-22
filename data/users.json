@@ -1,3 +1,13 @@
 [
-    { "username": "admin", "password": "password123" }
+  {
+    "username": "1",
+    "password": "$2a$10$qWxUwBbbW9AW1/aYZt8L6.c9mWpFo51U1/esayLGU186PTAEqtf7.",
+    "inventory": [
+      1,
+      2,
+      29,
+      90,
+      9
+    ]
+  }
 ]
