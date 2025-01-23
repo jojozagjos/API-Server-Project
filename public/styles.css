@@ -68,13 +68,15 @@ button:hover {
 
 .card-container {
     display: flex;
-    transition: transform 2s ease-out;
+    justify-content: center; /* Aligns cards in the center */
+    align-items: center; /* Aligns cards vertically */
 }
 
 .card {
     position: relative;
     width: 200px;
     height: 300px;
+    margin-right: 10px; /* Space between cards */
     overflow: hidden;
     border-radius: 10px;
     border: 2px solid #ddd;
@@ -94,20 +96,11 @@ button:hover {
     margin: 5px 0;
 }
 
-.card .rarity {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 5px;
-    width: 100%;
-    border-radius: 5px;
-}
-
 /* Slot Machine */
 #slot-machine {
-    width: 350px;
+    width: 500px;
     height: 200px; /* Adjusted height for better balance */
-    overflow: hidden;
+    /* overflow: hidden; */
     position: relative;
     margin-bottom: 20px;
     display: flex;
@@ -135,31 +128,11 @@ button:hover {
     background-color: #218838;
 }
 
-/* Final Card Display */
-.card-info {
-    text-align: center;
-    margin-top: 20px;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.2);
-    color: white;
-    border-radius: 5px;
-}
-
-/* Card container style for slot machine */
-.card-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px; /* Space between the cards */
-}
-
 /* Slot machine arrow (tab) */
 .arrow-tab {
-    position: fixed; /* Use fixed positioning to position it relative to the viewport */
-    bottom: 200px; /* Adjust the distance from the bottom of the viewport */
-    left: 50%; /* Position it horizontally at the center */
-    font-size: 32px;
-    color: #333;
-    transform: translateX(-50%) rotate(180deg); /* Move it left by 50% of its width and rotate */
-    z-index: 1000; /* Ensure it appears on top of other elements */
+    position: absolute;
+    top: 0; /* Adjust relative to slot machine */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%) rotate(180deg); /* Center and rotate the arrow */
+    z-index: 1000;
 }

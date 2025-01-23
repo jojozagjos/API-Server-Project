@@ -44,17 +44,26 @@ function showLogin() {
 }
 
 // Check if the user is already logged in when the page loads
-window.onload = function() {
+window.onload = function () {
     token = localStorage.getItem('token'); // Retrieve the token from localStorage
     const usernameDisplay = document.getElementById('username-display');
-    usernameDisplay.textContent = "Welcome, Loading...!";  // Change text to "Loading..."
+    usernameDisplay.textContent = "Welcome, Loading...!"; // Change text to "Loading..."
 
     if (token) {
+        // Decode the token to get user information
+        const payload = JSON.parse(atob(token.split('.')[1])); // Decode the token payload
+        const username = payload.username; // Extract username from the token
+
+        if (username) {
+            usernameDisplay.textContent = `${username}!`; // Update with the user's name
+        } else {
+            usernameDisplay.textContent = "Welcome, User!";
+        }
+
         // If token exists, auto-login and fetch user data
         getUserInventory();
         document.getElementById('login-form').style.display = 'none';
         document.getElementById('user-dashboard').style.display = 'block';
-        document.getElementById('username-display').textContent = 'Loading...'; // Placeholder
     } else {
         // Otherwise, show login form
         document.getElementById('login-form').style.display = 'block';
@@ -124,22 +133,41 @@ function getRarityColor(rarity) {
     }
 }
 
-// Get User Inventory from the server
+const rarityDropRates = {
+    'Common': 0.5,   // 50% chance
+    'Uncommon': 0.3, // 30% chance
+    'Rare': 0.15,    // 15% chance
+    'Epic': 0.04,    // 4% chance
+    'Legendary': 0.01 // 1% chance
+};
+
+// Pity system parameters
+let spinsSinceLastRare = 0; // Counter for spins since the last rare card
+const pityThreshold = 5; // After how many spins the pity increases
+const pityMultiplier = 0.05; // How much the drop rates increase each pity cycle
+
+// Fetch User Inventory from the server
 function getUserInventory() {
     const token = localStorage.getItem('token'); // Retrieve the token from localStorage
     if (!token) {
         console.error('No token found, user is not authenticated.');
         return;
     }
-
     fetch('/inventory', {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': 'Bearer ' + token
         }
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) {
+            // If the response status code is not in the 2xx range, throw an error
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+    })
     .then(data => {
+        console.log("Fetched inventory data:", data);  // Log the response data
         if (data.error) {
             console.error("Error fetching inventory:", data.error);
             return;
@@ -159,17 +187,17 @@ function getUserInventory() {
 // Add Card to Inventory
 function addCardToInventory(cardData) {
     const token = localStorage.getItem('token'); // Get the token from local storage
-
+    // Make sure the token exists before proceeding
     if (!token) {
         console.error("No token found, user is not authenticated.");
         return;
     }
-
+    // Send the request to the server to add the card to the user's inventory
     fetch('http://localhost:3000/addCardToInventory', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`  // Fix: use backticks for template literals
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ cardId: cardData.id })
     })
@@ -178,6 +206,7 @@ function addCardToInventory(cardData) {
         if (data.success) {
             console.log("Card added to inventory:", data.card);
             inventory.push(data.card); // Add the card to the inventory
+            displayInventory(inventory); // Immediately update the UI with the new inventory
         } else {
             console.error("Error adding card to inventory:", data.error);
         }
@@ -270,14 +299,14 @@ function displayInventory(cards) {
 }
 
 function spinSlotMachine() {
-    isSpinning = true;  // Set spinning flag to true
+    if (isSpinning) return; // Prevent multiple spins at once
+    isSpinning = true;
     const slotMachine = document.getElementById('slot-machine');
     const cardContainer = slotMachine.querySelector('.card-container');
 
     // Clear previous cards
     cardContainer.innerHTML = '';
 
-    // Ensure the token is available before fetching the cards
     token = localStorage.getItem('token'); // Retrieve the token from localStorage
     if (!token) {
         console.error('No token found, user is not authenticated.');
@@ -285,7 +314,6 @@ function spinSlotMachine() {
         return;
     }
 
-    // Fetch a new set of cards from the server each time the spin is triggered
     fetch('/cards', {
         method: 'GET',
         headers: {
@@ -299,24 +327,21 @@ function spinSlotMachine() {
             isSpinning = false;
             return;
         }
+
         if (!Array.isArray(response.cards)) {
             console.error('Invalid cards response:', response);
             isSpinning = false;
             return;
         }
 
-        // Generate a new set of cards for the spin
         const totalCards = response.cards;
-        const randomCards = getRandomCards(totalCards);  // Get a new subset of cards for this spin
+        const randomCards = getRandomCards(totalCards);
+
         randomCards.forEach(card => {
             const cardElement = document.createElement('div');
             cardElement.classList.add('card');
-
-            // Set the background color based on rarity
             const rarityColor = getRarityColor(card.rarity);
             cardElement.style.borderLeft = `10px solid ${rarityColor}`;
-
-            // Add card details to the card element
             cardElement.innerHTML = `
                 <div class="card-content">
                     <p><strong>Name:</strong> ${card.name}</p>
@@ -330,63 +355,150 @@ function spinSlotMachine() {
             cardContainer.appendChild(cardElement);
         });
 
-        // Add the tab to the center of the spin area
-        const tab = document.createElement('div');
-        tab.classList.add('tab');
-        tab.innerText = 'SPINNING';
-        slotMachine.appendChild(tab);
+        const cardWidth = cardContainer.firstChild.offsetWidth; 
+        const finalIndex = Math.floor(Math.random() * randomCards.length);
+        const finalPosition = finalIndex * cardWidth;
 
-        // Trigger the spin animation
-        const numCards = randomCards.length;
-        const spinDuration = 3;  // Duration of the spin in seconds
+        cardContainer.style.transition = 'none'; 
+        cardContainer.style.transform = 'translateX(0)';
 
-        // Set the card-container's transform property to simulate a spin
-        const spinAmount = Math.floor(Math.random() * 10) + 5;  // Random spin distance
-
-        // Apply the animation (scrolling the card-container)
-        cardContainer.style.transitionDuration = `${spinDuration}s`;  // Make the transition smooth
-        cardContainer.style.transform = `translateX(-${spinAmount * 100}px)`;  // Move the cards left by `spinAmount` units
-
-        // After the spin ends, show the final "stopped" card
         setTimeout(() => {
-            const finalCard = randomCards[Math.floor(Math.random() * numCards)];  // Select a random final card
-            showFinalCard(finalCard);
+            const spinDuration = 2; 
+            const spinDistance = finalPosition; 
 
-            // Add the final card to the inventory
-            addCardToInventory(finalCard);
+            cardContainer.style.transition = `${spinDuration}s ease-out`;
+            cardContainer.style.transform = `translateX(-${spinDistance}px)`; 
 
-            // Remove the tab and reset the spinning flag
-            tab.remove();
-            isSpinning = false;
-        }, spinDuration * 1000);  // Wait until the animation is done before selecting a final card
+            setTimeout(() => {
+                const finalCard = randomCards[finalIndex];
+                showFinalCard(finalCard);
+                addCardToInventory(finalCard);
+
+                isSpinning = false;
+
+                cardContainer.style.transition = 'none'; 
+                cardContainer.style.transform = `translateX(-${finalPosition}px)`; 
+            }, spinDuration * 1000);
+        }, 100);
     })
     .catch(err => {
         console.error('Error spinning:', err);
-        isSpinning = false;  // Reset spinning flag on error
+        isSpinning = false;
     });
+}
+
+// Function to apply the pity system and modify drop rates
+function applyPitySystem() {
+    if (spinsSinceLastRare >= pityThreshold) {
+        // Increase the chances of getting Rare, Epic, and Legendary cards
+        rarityDropRates['Rare'] += pityMultiplier;
+        rarityDropRates['Epic'] += pityMultiplier;
+        rarityDropRates['Legendary'] += pityMultiplier;
+
+        // Normalize drop rates (make sure they don't exceed 1 in total)
+        const totalWeight = Object.values(rarityDropRates).reduce((sum, rate) => sum + rate, 0);
+        const normalizationFactor = 1 / totalWeight; // Normalize to ensure total probability sums to 1
+        for (const rarity in rarityDropRates) {
+            rarityDropRates[rarity] *= normalizationFactor;
+        }
+
+        console.log("Pity applied! New drop rates:", rarityDropRates);
+    }
 }
 
 function getRandomCards(cards) {
     const randomCards = [];
-    const numberOfCards = 10;  // How many cards to show in the "slot machine"
+    const numberOfCards = 50;  // Number of cards to show in the "slot machine"
 
     for (let i = 0; i < numberOfCards; i++) {
-        const randomIndex = Math.floor(Math.random() * cards.length);
-        randomCards.push(cards[randomIndex]);
+        const randomCard = getRandomCardByRarity(cards);
+        randomCards.push(randomCard);
     }
 
     return randomCards;
 }
 
+// Select a random card based on the rarity drop rates
+function getRandomCardByRarity(cards) {
+    const totalWeight = Object.values(rarityDropRates).reduce((sum, rate) => sum + rate, 0);
+
+    // Generate a random number between 0 and 1
+    const randomValue = Math.random();
+
+    let cumulativeProbability = 0;
+    
+    // Determine the rarity based on the random number and drop rates
+    for (const rarity in rarityDropRates) {
+        cumulativeProbability += rarityDropRates[rarity];
+        if (randomValue < cumulativeProbability) {
+            // Filter cards by rarity and pick one randomly
+            const filteredCards = cards.filter(card => card.rarity === rarity);
+            const randomIndex = Math.floor(Math.random() * filteredCards.length);
+            const selectedCard = filteredCards[randomIndex];
+
+            // If the selected card is rare (Rare, Epic, or Legendary), reset the pity counter
+            if (['Rare', 'Epic', 'Legendary'].includes(selectedCard.rarity)) {
+                spinsSinceLastRare = 0; // Reset pity counter
+            } else {
+                spinsSinceLastRare++; // Increase pity counter for non-rare cards
+            }
+
+            return selectedCard;
+        }
+    }
+
+    // If no card was selected (shouldn't happen), pick a random card
+    return cards[Math.floor(Math.random() * cards.length)];
+}
+
+// Function to show the final card in a modal or overlay
 function showFinalCard(card) {
     const cardContainer = document.getElementById('slot-machine').querySelector('.card-container');
-    cardContainer.innerHTML = '';  // Clear previous cards
+    
+    // Create a modal overlay if it doesn't exist
+    let modal = document.getElementById('final-card-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'final-card-modal';
+        modal.style.position = 'fixed';
+        modal.style.top = 0;
+        modal.style.left = 0;
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        modal.style.display = 'flex';
+        modal.style.justifyContent = 'center';
+        modal.style.alignItems = 'center';
+        modal.style.zIndex = 9999;
+        document.body.appendChild(modal);
+    }
 
-    // Set the background color based on rarity
+    // Create a button inside the modal to close it and continue
+    const continueButton = document.createElement('button');
+    continueButton.textContent = 'Continue';
+    continueButton.style.padding = '5px 10px';
+    continueButton.style.fontSize = '14px';
+    continueButton.style.backgroundColor = '#28a745';
+    continueButton.style.color = '#fff';
+    continueButton.style.border = 'none';
+    continueButton.style.cursor = 'pointer';
+    continueButton.style.marginTop = '20px'; // Spacing between card and button
+    continueButton.onclick = function() {
+        modal.style.display = 'none';  // Hide the modal when the user clicks continue
+    };
+
+    // Clear any previous content in the modal and create the new final card element
+    modal.innerHTML = '';
+
+    // Card Element
     const rarityColor = getRarityColor(card.rarity);
     const finalCardElement = document.createElement('div');
     finalCardElement.classList.add('card');
     finalCardElement.style.borderLeft = `10px solid ${rarityColor}`;
+    finalCardElement.style.padding = '20px';
+    finalCardElement.style.backgroundColor = '#fff';
+    finalCardElement.style.maxWidth = '300px'; // Set max width for the card
+    finalCardElement.style.textAlign = 'center'; // Center text in the card
     finalCardElement.innerHTML = `
         <div class="card-content">
             <p><strong>Name:</strong> ${card.name}</p>
@@ -397,5 +509,17 @@ function showFinalCard(card) {
             <p><strong>Cost:</strong> ${card.cost}</p>
         </div>
     `;
-    cardContainer.appendChild(finalCardElement);
+
+    // Add the card and button to the modal in a flex container
+    const modalContent = document.createElement('div');
+    modalContent.style.display = 'flex';
+    modalContent.style.flexDirection = 'column'; // Stack elements vertically
+    modalContent.style.alignItems = 'center'; // Center elements horizontally
+    modalContent.appendChild(finalCardElement);
+    modalContent.appendChild(continueButton);
+
+    modal.appendChild(modalContent);
+
+    // Show the modal with the final card
+    modal.style.display = 'flex';
 }

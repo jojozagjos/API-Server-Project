@@ -1269,6 +1269,15 @@
         "type": "Spell",
         "rarity": "Common",
         "cost": 2
+      },
+      {
+        "id": 126,
+        "name": "Mighty Snail",
+        "set": "Comedy Crusaders",
+        "cardNumber": 1,
+        "type": "Creature",
+        "rarity": "Legendary",
+        "cost": 100
       }
     ]
   }

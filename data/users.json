@@ -1,7 +1,38 @@
 [
   {
     "username": "1",
-    "password": "$2a$10$lUjszgXm50cqzrcxmx9U7.oCXwyWg9LXOHTT0yOgHPg9EijqbRQDq",
-    "inventory": []
+    "password": "$2a$10$gbfcKzJQHLaskIRouz5Azu3PzkEKtAtG/3bMCwoaXgAoP7EJ4MMIK",
+    "inventory": [
+      116,
+      51,
+      43,
+      67,
+      15,
+      123,
+      12,
+      66,
+      98,
+      95,
+      108,
+      112,
+      52,
+      72,
+      27,
+      90,
+      89,
+      58,
+      84,
+      122,
+      92,
+      19,
+      64,
+      26,
+      32,
+      103,
+      28,
+      14,
+      57,
+      20
+    ]
   }
 ]

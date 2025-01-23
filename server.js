@@ -179,14 +179,15 @@ app.post('/addCardToInventory', authenticate, (req, res) => {
         return res.status(404).send({ error: 'User not found' });
     }
 
-    // Read cards file and access the cards array
+    // Access the `cards` property in the JSON file
     const cardsData = readJSONFile(cardsFile);
-    const cards = cardsData || [];
+    const cards = cardsData.cards; // Access the `cards` array
 
-    // Log the cards to debug
-    console.log('Fetched cards:', cards);
+    if (!Array.isArray(cards)) {
+        return res.status(500).send({ error: 'Cards data is corrupted' });
+    }
 
-    const card = cards.find(c => c.id === cardId);
+    const card = cards.find(c => c.id == cardId);
 
     if (!card) {
         return res.status(404).send({ error: 'Card not found' });
@@ -197,7 +198,7 @@ app.post('/addCardToInventory', authenticate, (req, res) => {
         writeJSONFile(usersFile, users);
     }
 
-    res.send({ success: true, card: card });
+    res.send({ success: true, card });
 });
 
 // Get the user's inventory (GET /inventory)
@@ -205,17 +206,13 @@ app.get('/inventory', authenticate, (req, res) => {
     try {
         const users = readJSONFile(usersFile);
         const user = users.find(u => u.username === req.user.username);
-
         if (!user) {
             console.error(`User not found: ${req.user.username}`);
             return res.status(404).send({ error: 'User not found' });
         }
-
         const cardsData = readJSONFile(cardsFile);
         const cards = cardsData.cards || [];  // Safely access the cards array
-
         console.log('Fetched cards:', cards);  // Debug log
-
         const userCards = user.inventory.map(cardId => {
             const card = cards.find(c => c.id === cardId);
             if (!card) {
@@ -224,7 +221,6 @@ app.get('/inventory', authenticate, (req, res) => {
             }
             return card;  // Return the valid card
         }).filter(card => card !== null);  // Remove null values
-
         console.log('User cards:', userCards);  // Debug log for user cards
         res.send(userCards);
     } catch (err) {
@@ -257,7 +253,7 @@ app.post('/inventory', authenticate, (req, res) => {
     } else {
         console.log(`Card ID ${cardId} already in inventory`);
     }
-
+    
     res.send({ success: true, message: 'Card added to inventory' });
 });
 
