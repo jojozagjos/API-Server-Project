@@ -129,7 +129,7 @@ app.post('/cards', authenticate, (req, res) => {
 // Update an existing card (PUT /cards/:id)
 app.put('/cards/:id', authenticate, (req, res) => {
     const { id } = req.params;
-    const { name, rarity } = req.body;
+    const { name } = req.body;  // We only need the name for this scenario
 
     const cards = readJSONFile(cardsFile);
     const cardIndex = cards.findIndex(card => card.id == id);
@@ -139,28 +139,41 @@ app.put('/cards/:id', authenticate, (req, res) => {
     }
 
     if (name) cards[cardIndex].name = name;
-    if (rarity) cards[cardIndex].rarity = rarity;
 
     writeJSONFile(cardsFile, cards);
 
     res.send(cards[cardIndex]);
 });
 
-// Delete a card (DELETE /cards/:id)
 app.delete('/cards/:id', authenticate, (req, res) => {
     const { id } = req.params;
+    const cardId = parseInt(id);  // Convert the ID to an integer
 
-    const cards = readJSONFile(cardsFile);
-    const cardIndex = cards.findIndex(card => card.id == id);
+    try {
+        const cards = readJSONFile(cardsFile);
+        const cardIndex = cards.findIndex(card => card.id === cardId);  // Find card by ID
 
-    if (cardIndex === -1) {
-        return res.status(404).send({ error: 'Card not found' });
+        if (cardIndex === -1) {
+            return res.status(404).json({ error: 'Card not found' });
+        }
+
+        // Remove card from all users' inventories
+        const users = readJSONFile(usersFile);
+        users.forEach(user => {
+            // Filter out the cardId from the inventory if it exists
+            user.inventory = user.inventory.filter(cardId => cardId !== cardId);
+        });
+
+        // Now remove the card from the cards array
+        const deletedCard = cards.splice(cardIndex, 1);  // Remove the card from the list
+        writeJSONFile(cardsFile, cards);  // Save updated cards data
+        writeJSONFile(usersFile, users);  // Save updated users data
+
+        res.json(deletedCard[0]);  // Return the deleted card details
+    } catch (err) {
+        console.error('Error in deleting card:', err);
+        res.status(500).json({ error: 'Internal server error', details: err.message });  // Return detailed error message
     }
-
-    const deletedCard = cards.splice(cardIndex, 1);
-    writeJSONFile(cardsFile, cards);
-
-    res.send(deletedCard[0]);
 });
 
 // Add a card to the user's inventory (POST /addCardToInventory)

@@ -18,7 +18,7 @@ h2, h3 {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     width: 80vw; /* Adjust width to a larger size */
     max-width: 500px; /* Set a max width to avoid it getting too wide */
-    height: 90vh; /* Set a height to make it take up most of the viewport */
+    height: 100vh; /* Set a height to make it take up most of the viewport */
     display: flex;
     flex-direction: column; /* Stack form elements vertically */
     justify-content: center; /* Vertically center the content */

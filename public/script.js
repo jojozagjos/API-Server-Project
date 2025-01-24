@@ -263,8 +263,8 @@ function addRotationEvents(cardElement) {
                 const deltaY = e.clientY - startY;
 
                 // Apply 3D rotation based on mouse movement (inverted directions)
-                rotateX -= deltaY * 3; // Reverse sensitivity to vertical movement
-                rotateY += deltaX * 3; // Reverse sensitivity to horizontal movement
+                rotateX -= deltaY * 0.3; // Reverse sensitivity to vertical movement
+                rotateY += deltaX * 0.3; // Reverse sensitivity to horizontal movement
                 cardElement.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
                 startX = e.clientX;
                 startY = e.clientY;
@@ -287,13 +287,13 @@ function addRotationEvents(cardElement) {
     }
 }
 
-// Display Inventory
+// Display Inventory with Edit and Delete options
 function displayInventory(cards) {
     const inventoryList = document.getElementById('inventory-list');
     inventoryList.innerHTML = '';  // Clear current inventory
 
     if (Array.isArray(cards) && cards.length > 0) {
-        cards.forEach(card => {
+        cards.forEach((card, index) => {
             if (card && card.name && card.rarity) {  // Ensure card has necessary properties
                 const cardElement = document.createElement('div');
                 cardElement.classList.add('card');
@@ -312,8 +312,11 @@ function displayInventory(cards) {
                         <p><strong>Toughness:</strong> ${card.toughness}</p>
                         <p><strong>Cost:</strong> ${card.cost}</p>
                     </div>
+                    <button class="edit-card" onclick="editCard(${index})">Edit</button>
+                    <button class="delete-card" onclick="deleteCard(${index})">Delete</button>
                 `;
                 inventoryList.appendChild(cardElement);
+
                 // Add drag events to the card
                 addRotationEvents(cardElement);
             } else {
@@ -323,6 +326,16 @@ function displayInventory(cards) {
     } else {
         inventoryList.innerHTML = "<p>No cards in inventory</p>";  // Inform the user via UI
     }
+}
+
+// Edit card name function
+function editCard(cardId) {
+    
+}
+
+// Delete card from inventory
+function deleteCard(cardId) {
+
 }
 
 // Function to Sort Inventory based on selected criteria
