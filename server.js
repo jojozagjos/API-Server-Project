@@ -102,7 +102,6 @@ app.post('/getToken', (req, res) => {
     }
 });
 
-// Cards CRUD Endpoints
 // Get all cards (GET /cards)
 app.get('/cards', authenticate, (req, res) => {
     const cards = readJSONFile(cardsFile);

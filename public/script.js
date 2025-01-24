@@ -43,6 +43,15 @@ function showLogin() {
     document.getElementById('login-form').style.display = 'block';
 }
 
+// Event Listener for Sort Selection
+document.getElementById('sort-select').addEventListener('change', function() {
+    const sortBy = this.value;  // Get the selected sort option (name, rarity, power, etc.)
+    if (inventory && inventory.length > 0) {
+        const sortedCards = sortInventory(inventory, sortBy);  // Sort the cards based on selection
+        displayInventory(sortedCards);  // Display the sorted inventory
+    }
+});
+
 // Check if the user is already logged in when the page loads
 window.onload = function () {
     token = localStorage.getItem('token'); // Retrieve the token from localStorage
@@ -141,10 +150,28 @@ const rarityDropRates = {
     'Legendary': 0.01 // 1% chance
 };
 
-// Pity system parameters
-let spinsSinceLastRare = 0; // Counter for spins since the last rare card
-const pityThreshold = 5; // After how many spins the pity increases
-const pityMultiplier = 0.05; // How much the drop rates increase each pity cycle
+function resetDropRates() {
+    // Reset drop rates to their initial values
+    rarityDropRates = {
+        'Common': 0.5,   // 50% chance
+        'Uncommon': 0.3, // 30% chance
+        'Rare': 0.15,    // 15% chance
+        'Epic': 0.04,    // 4% chance
+        'Legendary': 0.01 // 1% chance
+    };
+}
+
+// Get Rarity Priority for Sorting (optional, depending on how you want to order rarities)
+function getRarityPriority(rarity) {
+    const rarityOrder = {
+        'Common': 1,
+        'Uncommon': 2,
+        'Rare': 3,
+        'Epic': 4,
+        'Legendary': 5
+    };
+    return rarityOrder[rarity] || 0;  // Default to 0 if rarity is not recognized
+}
 
 // Fetch User Inventory from the server
 function getUserInventory() {
@@ -298,11 +325,34 @@ function displayInventory(cards) {
     }
 }
 
+// Function to Sort Inventory based on selected criteria
+function sortInventory(cards, sortBy) {
+    return cards.sort((a, b) => {
+        if (sortBy === 'name') {
+            return a.name.localeCompare(b.name);  // Sort by name alphabetically
+        } else if (sortBy === 'rarity') {
+            return getRarityPriority(a.rarity) - getRarityPriority(b.rarity);  // Sort by rarity
+        } else if (sortBy === 'power') {
+            return a.power - b.power;  // Sort by power
+        } else if (sortBy === 'toughness') {
+            return a.toughness - b.toughness;  // Sort by toughness
+        } else if (sortBy === 'type') {
+            return a.type.localeCompare(b.type);  // Sort by creature type alphabetically
+        }
+        return 0;  // No sorting
+    });
+}
+
+let initialContainerOffset = null; // Store initial offset value
+
 function spinSlotMachine() {
     if (isSpinning) return; // Prevent multiple spins at once
     isSpinning = true;
     const slotMachine = document.getElementById('slot-machine');
     const cardContainer = slotMachine.querySelector('.card-container');
+
+    // Apply the pity system before the spin
+    applyPitySystem();
 
     // Clear previous cards
     cardContainer.innerHTML = '';
@@ -355,22 +405,43 @@ function spinSlotMachine() {
             cardContainer.appendChild(cardElement);
         });
 
-        const cardWidth = cardContainer.firstChild.offsetWidth; 
-        const finalIndex = Math.floor(Math.random() * randomCards.length);
-        const finalPosition = finalIndex * cardWidth;
+        const cardWidth = cardContainer.firstChild.getBoundingClientRect().width; // Accurate card width
+        const computedStyle = window.getComputedStyle(cardContainer.firstChild);
+        const marginLeft = parseFloat(computedStyle.marginLeft) || 0;
+        const marginRight = parseFloat(computedStyle.marginRight) || 0;
+        const totalCardWidth = cardWidth + marginLeft + marginRight;
+
+        const containerWidth = slotMachine.getBoundingClientRect().width; // Slot-machine visible area width
+         // Store initial container offset the first time the function is called
+        if (initialContainerOffset === null) {
+            // Ensure we calculate the container offset correctly and only once
+            initialContainerOffset = cardContainer.getBoundingClientRect().left - slotMachine.getBoundingClientRect().left;
+        }
+        const containerOffset = initialContainerOffset;
+
+        console.log(containerOffset)
+
+        // Generate a random index between the midpoint and the end of the cards array
+        const minIndex = Math.floor(randomCards.length / 2);
+        const maxIndex = randomCards.length - 1;
+        const targetIndex = Math.floor(Math.random() * (maxIndex - minIndex + 1)) + minIndex; // Random whole number in range
+
+        console.log(targetIndex)
 
         cardContainer.style.transition = 'none'; 
         cardContainer.style.transform = 'translateX(0)';
 
-        setTimeout(() => {
-            const spinDuration = 2; 
-            const spinDistance = finalPosition; 
+        let finalPosition = (targetIndex * totalCardWidth) - ((containerWidth - totalCardWidth) / 2) + containerOffset;
+        finalPosition = Math.abs(finalPosition);  // Flip negative to positive
+        console.log(finalPosition)
 
-            cardContainer.style.transition = `${spinDuration}s ease-out`;
-            cardContainer.style.transform = `translateX(-${spinDistance}px)`; 
+        setTimeout(() => {
+            const spinDuration = 5; 
+            cardContainer.style.transition = `${spinDuration}s ease-in-out`;
+            cardContainer.style.transform = `translateX(-${finalPosition}px)`; 
 
             setTimeout(() => {
-                const finalCard = randomCards[finalIndex];
+                const finalCard = randomCards[targetIndex]; // Use the fixed index here
                 showFinalCard(finalCard);
                 addCardToInventory(finalCard);
 
@@ -390,6 +461,7 @@ function spinSlotMachine() {
 // Function to apply the pity system and modify drop rates
 function applyPitySystem() {
     if (spinsSinceLastRare >= pityThreshold) {
+
         // Increase the chances of getting Rare, Epic, and Legendary cards
         rarityDropRates['Rare'] += pityMultiplier;
         rarityDropRates['Epic'] += pityMultiplier;
@@ -403,12 +475,13 @@ function applyPitySystem() {
         }
 
         console.log("Pity applied! New drop rates:", rarityDropRates);
+        // resetDropRates()
     }
 }
 
 function getRandomCards(cards) {
     const randomCards = [];
-    const numberOfCards = 50;  // Number of cards to show in the "slot machine"
+    const numberOfCards = cards.length;  // Number of cards to show in the "slot machine"
 
     for (let i = 0; i < numberOfCards; i++) {
         const randomCard = getRandomCardByRarity(cards);
@@ -417,6 +490,11 @@ function getRandomCards(cards) {
 
     return randomCards;
 }
+
+// Pity system parameters
+let spinsSinceLastRare = 0; // Counter for spins since the last rare card
+const pityThreshold = 1; // After how many spins the pity increases
+const pityMultiplier = 0.05; // How much the drop rates increase each pity cycle
 
 // Select a random card based on the rarity drop rates
 function getRandomCardByRarity(cards) {
@@ -436,13 +514,6 @@ function getRandomCardByRarity(cards) {
             const randomIndex = Math.floor(Math.random() * filteredCards.length);
             const selectedCard = filteredCards[randomIndex];
 
-            // If the selected card is rare (Rare, Epic, or Legendary), reset the pity counter
-            if (['Rare', 'Epic', 'Legendary'].includes(selectedCard.rarity)) {
-                spinsSinceLastRare = 0; // Reset pity counter
-            } else {
-                spinsSinceLastRare++; // Increase pity counter for non-rare cards
-            }
-
             return selectedCard;
         }
     }
@@ -454,7 +525,25 @@ function getRandomCardByRarity(cards) {
 // Function to show the final card in a modal or overlay
 function showFinalCard(card) {
     const cardContainer = document.getElementById('slot-machine').querySelector('.card-container');
+
+     // If the selected card is rare (Rare, Epic, or Legendary), reset the pity counter
+     if (['Rare', 'Epic', 'Legendary'].includes(card.rarity)) {
+        spinsSinceLastRare = 0; // Reset pity counter
+    } else {
+        spinsSinceLastRare++; // Increase pity counter for non-rare cards
+    }
     
+    document.getElementById('pity-status').textContent = spinsSinceLastRare + "/50";
+
+    if (spinsSinceLastRare >= pityThreshold) {
+        const spinButton = document.getElementById('spin-button'); // Spin button
+        spinButton.style.backgroundColor = "yellow"; // Change button color to indicate pity applied (if applicable)
+    } else {
+        const spinButton = document.getElementById('spin-button'); // Spin button
+        spinButton.style.backgroundColor = ""; // Change button color to indicate pity applied (if applicable)
+        resetDropRates()
+    }
+
     // Create a modal overlay if it doesn't exist
     let modal = document.getElementById('final-card-modal');
     if (!modal) {

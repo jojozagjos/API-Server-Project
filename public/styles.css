@@ -18,7 +18,7 @@ h2, h3 {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     width: 80vw; /* Adjust width to a larger size */
     max-width: 500px; /* Set a max width to avoid it getting too wide */
-    height: 80vh; /* Set a height to make it take up most of the viewport */
+    height: 90vh; /* Set a height to make it take up most of the viewport */
     display: flex;
     flex-direction: column; /* Stack form elements vertically */
     justify-content: center; /* Vertically center the content */
@@ -68,7 +68,7 @@ button:hover {
 
 .card-container {
     display: flex;
-    justify-content: center; /* Aligns cards in the center */
+    justify-content: flex-start; /* Start aligning cards from the left */
     align-items: center; /* Aligns cards vertically */
 }
 
@@ -76,7 +76,7 @@ button:hover {
     position: relative;
     width: 200px;
     height: 300px;
-    margin-right: 10px; /* Space between cards */
+    /* margin-right: 10px; */
     overflow: hidden;
     border-radius: 10px;
     border: 2px solid #ddd;
@@ -100,7 +100,7 @@ button:hover {
 #slot-machine {
     width: 500px;
     height: 200px; /* Adjusted height for better balance */
-    /* overflow: hidden; */
+    overflow: hidden;
     position: relative;
     margin-bottom: 20px;
     display: flex;
@@ -126,6 +126,12 @@ button:hover {
 
 #spin-button:hover {
     background-color: #218838;
+}
+
+/* Pity System */
+#pity-system-text {
+    margin-top: 20px;
+    font-size: .8em;
 }
 
 /* Slot machine arrow (tab) */

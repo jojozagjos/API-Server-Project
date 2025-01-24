@@ -47,6 +47,17 @@
 
     <!-- Inventory Section -->
     <h3>Your Inventory:</h3>
+    <!-- Inventory Sorting Options -->
+    <div id="sort-options">
+        <label for="sort-select">Sort by:</label>
+        <select id="sort-select">
+            <option value="name">Name</option>
+            <option value="rarity">Rarity</option>
+            <option value="power">Power</option>
+            <option value="toughness">Toughness</option>
+            <option value="type">Type</option>
+        </select>
+    </div>
     <div id="inventory-container">
         <div id="inventory-list"></div>
     </div>
@@ -63,7 +74,11 @@
             <div class="arrow-tab">&#8595;</div>
         </div>
         <button id="spin-button">Spin to Get a Card</button>
-    </div>    
+        <div id="pity-system-text">
+            <p><strong>Pity System:</strong> The more spins you have without a Rare or better card, the higher your chances of getting one.</p>
+            <p class="pity-explanation">You are currently at <strong id="pity-status">0/50</strong> spins without a rare card.</p>
+        </div>
+    </div>
 </div>
 
 <script src="script.js"></script>
