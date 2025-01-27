@@ -20,6 +20,7 @@ app.get('/', (req, res) => {
 // File paths
 const usersFile = path.join(__dirname, 'data', 'users.json');
 const cardsFile = path.join(__dirname, 'data', 'cards.json');
+const cardsUsersFile = path.join(__dirname, 'data', 'cardsUsers.json');
 
 // Authentication middleware to check JWT tokens
 function authenticate(req, res, next) {
@@ -108,71 +109,119 @@ app.get('/cards', authenticate, (req, res) => {
     res.send(cards);
 });
 
-// Create a new card (POST /cards)
-app.post('/cards', authenticate, (req, res) => {
-    const { name, rarity } = req.body;
+// Get all cards (GET /cards)
+app.get('/cardsUsers', authenticate, (req, res) => {
+    try {
+        const cardsData = readJSONFile(cardsUsersFile);  // Ensure the file exists and is readable
+        const filter = req.query.filter || 'all';  // Retrieve the filter from query parameters
 
-    // Validate input
-    if (!name || !rarity) {
-        return res.status(400).send({ error: 'Name and rarity are required' });
+        if (filter === 'all') {
+            // If the filter is 'all', return all cards
+            res.send(cardsData.cardsUsers);
+        } else if (filter === 'mine') {
+            // If the filter is 'mine', return only the cards of the logged-in user
+            const userCards = cardsData.cardsUsers.filter(card => card.username === req.user.username);
+            res.send(userCards);
+        } else {
+            // If any other filter is applied (e.g., 'type'), you can add additional filtering logic here
+            const userCards = cardsData.cardsUsers.filter(card => card.type === filter);
+            res.send(userCards);
+        }
+        console.log('Authenticated user:', req.user.username);
+    } catch (error) {
+        console.error('Error reading cards data:', error);
+        res.status(500).send({ error: 'Internal server error' });
     }
-
-    const cards = readJSONFile(cardsFile);
-    const newCard = { id: Date.now(), name, rarity }; // Simple ID generation
-
-    cards.push(newCard);
-    writeJSONFile(cardsFile, cards);
-
-    res.status(201).send(newCard); // Return the newly created card
 });
 
-// Update an existing card (PUT /cards/:id)
-app.put('/cards/:id', authenticate, (req, res) => {
+app.put('/cardsUsers/:id', authenticate, (req, res) => {
     const { id } = req.params;
-    const { name } = req.body;  // We only need the name for this scenario
-
-    const cards = readJSONFile(cardsFile);
-    const cardIndex = cards.findIndex(card => card.id == id);
-
-    if (cardIndex === -1) {
-        return res.status(404).send({ error: 'Card not found' });
-    }
-
-    if (name) cards[cardIndex].name = name;
-
-    writeJSONFile(cardsFile, cards);
-
-    res.send(cards[cardIndex]);
-});
-
-app.delete('/cards/:id', authenticate, (req, res) => {
-    const { id } = req.params;
-    const cardId = parseInt(id);  // Convert the ID to an integer
+    const { name, rarity, set, cardNumber, type, cost } = req.body;  // Destructure the updated card details
 
     try {
-        const cards = readJSONFile(cardsFile);
-        const cardIndex = cards.findIndex(card => card.id === cardId);  // Find card by ID
+        // Read the current cards data
+        const cardsData = readJSONFile(cardsUsersFile);
 
+        // Find the index of the card to be edited
+        const cardIndex = cardsData.cardsUsers.findIndex(card => card.id == id && card.username === req.user.username);
+
+        // If the card is not found or does not belong to the logged-in user, return an error
         if (cardIndex === -1) {
-            return res.status(404).json({ error: 'Card not found' });
+            return res.status(404).send({ error: 'Card not found or unauthorized' });
         }
 
-        // Remove card from all users' inventories
-        const users = readJSONFile(usersFile);
-        users.forEach(user => {
-            // Filter out the cardId from the inventory if it exists
-            user.inventory = user.inventory.filter(cardId => cardId !== cardId);
-        });
+        // Update the card's details
+        const updatedCard = {
+            ...cardsData.cardsUsers[cardIndex],
+            name, 
+            rarity, 
+            set, 
+            cardNumber, 
+            type, 
+            cost
+        };
 
-        // Now remove the card from the cards array
-        const deletedCard = cards.splice(cardIndex, 1);  // Remove the card from the list
-        writeJSONFile(cardsFile, cards);  // Save updated cards data
-        writeJSONFile(usersFile, users);  // Save updated users data
+        // Replace the old card data with the updated one
+        cardsData.cardsUsers[cardIndex] = updatedCard;
 
-        res.json(deletedCard[0]);  // Return the deleted card details
-    } catch (err) {
-        console.error('Error in deleting card:', err);
-        res.status(500).json({ error: 'Internal server error', details: err.message });  // Return detailed error message
+        // Write the updated cards data back to the file
+        writeJSONFile(cardsUsersFile, cardsData);
+
+        // Send the updated card as a response
+        res.json(updatedCard);
+    } catch (error) {
+        console.error('Error updating card:', error);
+        res.status(500).send({ error: 'Internal server error' });
+    }
+});
+
+// Create a new card for the authenticated user (POST /cards)
+app.post('/cardsUsers', authenticate, (req, res) => {
+    const { name, rarity, set, cardNumber, type, cost, power, toughness } = req.body;
+
+    const cardsData = readJSONFile(cardsUsersFile);  // Read the existing cards data
+
+    // Create the new card with a unique ID
+    const newCard = {
+        id: cardsData.cardsUsers.length + 1,  // Incremental ID
+        name,
+        rarity,
+        set,
+        cardNumber,
+        type,
+        cost,
+        power,
+        toughness,
+        username: req.user.username  // Associate card with the username
+    };
+
+    cardsData.cardsUsers.push(newCard);  // Add the new card to the user's cards array
+    writeJSONFile(cardsUsersFile, cardsData);  // Save the updated data back to the file
+
+    res.status(201).json(newCard);  // Return the newly created card
+});
+
+// Delete a card (only the user who created the card can delete it)
+app.delete('/cardsUsers/:id', authenticate, (req, res) => {
+    const { id } = req.params;
+    const username = req.user.username;
+
+    try {
+        const cardsData = readJSONFile(cardsUsersFile);
+        const cardIndex = cardsData.cardsUsers.findIndex(card => card.id == id && card.username === username);
+
+        if (cardIndex === -1) {
+            return res.status(404).send({ error: 'Card not found or unauthorized' });
+        }
+
+        const deletedCard = cardsData.cardsUsers.splice(cardIndex, 1);  // Remove the card from the array
+        writeJSONFile(cardsUsersFile, cardsData);  // Save updated data back to file
+
+        // Respond with a success flag and the deleted card
+        res.json({ success: true, card: deletedCard[0] });  
+    } catch (error) {
+        console.error('Error deleting card:', error);
+        res.status(500).send({ error: 'Internal server error' });
     }
 });
 

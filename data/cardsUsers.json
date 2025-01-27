@@ -1,0 +1,24 @@
+{
+  "cardsUsers": [
+    {
+      "id": 1,
+      "name": "Admin",
+      "rarity": "Uncommon",
+      "set": "1",
+      "cardNumber": "1212",
+      "type": "Spell",
+      "cost": "11",
+      "username": "Admin"
+    },
+    {
+      "id": 2,
+      "name": "Joseph Slade",
+      "rarity": "Uncommon",
+      "set": "1",
+      "cardNumber": "1212",
+      "type": "Creature",
+      "cost": "111111",
+      "username": "1"
+    }
+  ]
+}

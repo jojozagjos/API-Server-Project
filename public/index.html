@@ -47,6 +47,7 @@
     <!-- Inventory Sorting Options -->
     <div id="sort-options">
         <label for="sort-select">Sort by:</label>
+        <input type="text" id="search-inventory" placeholder="Search cards...">
         <select id="sort-select">
             <option value="name">Name</option>
             <option value="rarity">Rarity</option>
@@ -76,9 +77,67 @@
             <p class="pity-explanation">You are currently at <strong id="pity-status">0/50</strong> spins without a rare card.</p>
         </div>
     </div>
+    <button id="my-cards-button">My Cards</button>
     <!-- Logout button -->
     <button id="logout-button" class="logout-button">Logout</button>
 </div>
+
+<div id="my-cards-screen" style="display: none;">
+    <h2>Your Cards</h2>
+    <button id="create-new-card-button">Create New Card</button>
+    <input type="text" id="search-cards" placeholder="Search cards...">
+    <select id="filter-cards">
+        <option value="all">All Cards</option>
+        <option value="mine">My Cards</option>
+    </select>
+
+    <div id="user-cards-list" style="max-height: 500px; overflow-y: scroll;"></div>
+
+    <button id="back-to-dashboard">Back</button>
+</div>
+
+<form id="add-card-form" style="display: none;">
+    <input type="text" id="card-name" placeholder="Card Name" required>
+    <input type="text" id="card-set" placeholder="Card Set" required>
+    <input type="number" id="card-number" placeholder="Card Number" required>
+    <select id="card-type">
+        <option value="Creature">Creature</option>
+        <option value="Spell">Spell</option>
+        <option value="Artifact">Artifact</option>
+        <option value="Enchantment">Enchantment</option>
+    </select>
+    <select id="card-rarity">
+        <option value="Common">Common</option>
+        <option value="Uncommon">Uncommon</option>
+        <option value="Rare">Rare</option>
+        <option value="Epic">Epic</option>
+        <option value="Legendary">Legendary</option>
+    </select>
+    <input type="number" id="card-cost" placeholder="Card Cost" required>
+    <button type="submit">Add Card</button>
+</form>
+
+<!-- Edit Card Form -->
+<form id="edit-card-form" style="display: none;">
+    <input type="text" id="edit-card-name" placeholder="Card Name" required>
+    <input type="text" id="edit-card-set" placeholder="Card Set" required>
+    <input type="number" id="edit-card-number" placeholder="Card Number" required>
+    <select id="edit-card-type">
+        <option value="Creature">Creature</option>
+        <option value="Spell">Spell</option>
+        <option value="Artifact">Artifact</option>
+        <option value="Enchantment">Enchantment</option>
+    </select>
+    <select id="edit-card-rarity">
+        <option value="Common">Common</option>
+        <option value="Uncommon">Uncommon</option>
+        <option value="Rare">Rare</option>
+        <option value="Epic">Epic</option>
+        <option value="Legendary">Legendary</option>
+    </select>
+    <input type="number" id="edit-card-cost" placeholder="Card Cost" required>
+    <button type="submit">Save Changes</button>
+</form>
 
 <script src="script.js"></script>
 </body>

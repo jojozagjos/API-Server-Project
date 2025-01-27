@@ -1,0 +1,1284 @@
+{
+    "cards": [
+      {
+        "id": 1,
+        "name": "Fireball Magus",
+        "set": "Base Set",
+        "cardNumber": 1,
+        "type": "Creature",
+        "power": 3000,
+        "toughness": 2500,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 2,
+        "name": "Frost Giant",
+        "set": "Base Set",
+        "cardNumber": 2,
+        "type": "Creature",
+        "power": 4000,
+        "toughness": 3500,
+        "rarity": "Uncommon",
+        "cost": 4
+      },
+      {
+        "id": 3,
+        "name": "Thunderstorm Sorcerer",
+        "set": "Base Set",
+        "cardNumber": 3,
+        "type": "Spell",
+        "rarity": "Rare",
+        "cost": 2
+      },
+      {
+        "id": 4,
+        "name": "Stone Golem",
+        "set": "Base Set",
+        "cardNumber": 4,
+        "type": "Creature",
+        "power": 5000,
+        "toughness": 4500,
+        "rarity": "Epic",
+        "cost": 4
+      },
+      {
+        "id": 5,
+        "name": "Nature's Embrace",
+        "set": "Base Set",
+        "cardNumber": 5,
+        "type": "Enchantment",
+        "rarity": "Uncommon",
+        "cost": 3
+      },
+      {
+        "id": 6,
+        "name": "Phoenix Reborn",
+        "set": "Base Set",
+        "cardNumber": 6,
+        "type": "Creature",
+        "power": 6000,
+        "toughness": 5500,
+        "rarity": "Rare",
+        "cost": 6
+      },
+      {
+        "id": 7,
+        "name": "Shadow Assassin",
+        "set": "Base Set",
+        "cardNumber": 7,
+        "type": "Creature",
+        "power": 3500,
+        "toughness": 3000,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 8,
+        "name": "Doomsday Ritual",
+        "set": "Base Set",
+        "cardNumber": 8,
+        "type": "Spell",
+        "rarity": "Rare",
+        "cost": 5
+      },
+      {
+        "id": 9,
+        "name": "Crystal Serpent",
+        "set": "Base Set",
+        "cardNumber": 9,
+        "type": "Creature",
+        "power": 4500,
+        "toughness": 4000,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 10,
+        "name": "Arcane Wizard",
+        "set": "Base Set",
+        "cardNumber": 10,
+        "type": "Creature",
+        "power": 3200,
+        "toughness": 2800,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 11,
+        "name": "Ice Shard",
+        "set": "Base Set",
+        "cardNumber": 11,
+        "type": "Spell",
+        "rarity": "Epic",
+        "cost": 1
+      },
+      {
+        "id": 12,
+        "name": "Golden Griffin",
+        "set": "Base Set",
+        "cardNumber": 12,
+        "type": "Creature",
+        "power": 5500,
+        "toughness": 5000,
+        "rarity": "Uncommon",
+        "cost": 5
+      },
+      {
+        "id": 13,
+        "name": "Venomous Snake",
+        "set": "Base Set",
+        "cardNumber": 13,
+        "type": "Creature",
+        "power": 2800,
+        "toughness": 2200,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 14,
+        "name": "Cleansing Light",
+        "set": "Base Set",
+        "cardNumber": 14,
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "cost": 3
+      },
+      {
+        "id": 15,
+        "name": "Stormcaller",
+        "set": "Base Set",
+        "cardNumber": 15,
+        "type": "Creature",
+        "power": 4200,
+        "toughness": 3800,
+        "rarity": "Common",
+        "cost": 4
+      },
+      {
+        "id": 16,
+        "name": "Blaze Elemental",
+        "set": "Base Set",
+        "cardNumber": 16,
+        "type": "Creature",
+        "power": 4800,
+        "toughness": 4300,
+        "rarity": "Common",
+        "cost": 4
+      },
+      {
+        "id": 17,
+        "name": "Shadow Bolt",
+        "set": "Base Set",
+        "cardNumber": 17,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 18,
+        "name": "Ironclad Warrior",
+        "set": "Base Set",
+        "cardNumber": 18,
+        "type": "Creature",
+        "power": 3800,
+        "toughness": 3300,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 19,
+        "name": "Nature's Fury",
+        "set": "Base Set",
+        "cardNumber": 19,
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "cost": 4
+      },
+      {
+        "id": 20,
+        "name": "Spectral Ghost",
+        "set": "Base Set",
+        "cardNumber": 20,
+        "type": "Creature",
+        "power": 3200,
+        "toughness": 2700,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 21,
+        "name": "Frostbite",
+        "set": "Base Set",
+        "cardNumber": 21,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 1
+      },
+      {
+        "id": 22,
+        "name": "Lunar Priestess",
+        "set": "Base Set",
+        "cardNumber": 22,
+        "type": "Creature",
+        "power": 4100,
+        "toughness": 3600,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 23,
+        "name": "Boulder Crusher",
+        "set": "Base Set",
+        "cardNumber": 23,
+        "type": "Creature",
+        "power": 6000,
+        "toughness": 5500,
+        "rarity": "Uncommon",
+        "cost": 5
+      },
+      {
+        "id": 24,
+        "name": "Arcane Barrier",
+        "set": "Base Set",
+        "cardNumber": 24,
+        "type": "Enchantment",
+        "rarity": "Rare",
+        "cost": 5
+      },
+      {
+        "id": 25,
+        "name": "Thunderclap",
+        "set": "Base Set",
+        "cardNumber": 25,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 26,
+        "name": "Mystic Owl",
+        "set": "Base Set",
+        "cardNumber": 26,
+        "type": "Creature",
+        "power": 3500,
+        "toughness": 3000,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 27,
+        "name": "Inferno Dragon",
+        "set": "Base Set",
+        "cardNumber": 27,
+        "type": "Creature",
+        "power": 5200,
+        "toughness": 4700,
+        "rarity": "Uncommon",
+        "cost": 4
+      },
+      {
+        "id": 28,
+        "name": "Tidal Wave",
+        "set": "Base Set",
+        "cardNumber": 28,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 29,
+        "name": "Silver Knight",
+        "set": "Base Set",
+        "cardNumber": 29,
+        "type": "Creature",
+        "power": 4500,
+        "toughness": 4000,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 30,
+        "name": "Solar Flare",
+        "set": "Base Set",
+        "cardNumber": 30,
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "cost": 4
+      },
+      {
+        "id": 31,
+        "name": "Dreadful Gargoyle",
+        "set": "Base Set",
+        "cardNumber": 31,
+        "type": "Creature",
+        "power": 4800,
+        "toughness": 4200,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 32,
+        "name": "Cursed Tome",
+        "set": "Base Set",
+        "cardNumber": 32,
+        "type": "Enchantment",
+        "rarity": "Rare",
+        "cost": 4
+      },
+      {
+        "id": 33,
+        "name": "Flame Imp",
+        "set": "Base Set",
+        "cardNumber": 33,
+        "type": "Creature",
+        "power": 3200,
+        "toughness": 2800,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 34,
+        "name": "Harvest Druid",
+        "set": "Base Set",
+        "cardNumber": 34,
+        "type": "Creature",
+        "power": 4000,
+        "toughness": 3500,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 35,
+        "name": "Searing Blaze",
+        "set": "Base Set",
+        "cardNumber": 35,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 36,
+        "name": "Soul Devourer",
+        "set": "Base Set",
+        "cardNumber": 36,
+        "type": "Creature",
+        "power": 5500,
+        "toughness": 5000,
+        "rarity": "Uncommon",
+        "cost": 5
+      },
+      {
+        "id": 37,
+        "name": "Ancient Relic",
+        "set": "Base Set",
+        "cardNumber": 37,
+        "type": "Artifact",
+        "rarity": "Rare",
+        "cost": 4
+      },
+      {
+        "id": 38,
+        "name": "Frostbite Archer",
+        "set": "Base Set",
+        "cardNumber": 38,
+        "type": "Creature",
+        "power": 3400,
+        "toughness": 3000,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 39,
+        "name": "Blessed Healer",
+        "set": "Base Set",
+        "cardNumber": 39,
+        "type": "Creature",
+        "power": 3800,
+        "toughness": 3300,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 40,
+        "name": "Venomous Spider",
+        "set": "Base Set",
+        "cardNumber": 40,
+        "type": "Creature",
+        "power": 2800,
+        "toughness": 2200,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 41,
+        "name": "Arcane Explosion",
+        "set": "Base Set",
+        "cardNumber": 41,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 42,
+        "name": "Ironclad Defender",
+        "set": "Base Set",
+        "cardNumber": 42,
+        "type": "Creature",
+        "power": 4200,
+        "toughness": 3700,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 43,
+        "name": "Spectral Banshee",
+        "set": "Base Set",
+        "cardNumber": 43,
+        "type": "Creature",
+        "power": 3200,
+        "toughness": 2700,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 44,
+        "name": "Tornado Elemental",
+        "set": "Base Set",
+        "cardNumber": 44,
+        "type": "Creature",
+        "power": 5800,
+        "toughness": 5300,
+        "rarity": "Uncommon",
+        "cost": 5
+      },
+      {
+        "id": 45,
+        "name": "Solar Beam",
+        "set": "Base Set",
+        "cardNumber": 45,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 46,
+        "name": "Moonlit Owl",
+        "set": "Base Set",
+        "cardNumber": 46,
+        "type": "Creature",
+        "power": 3600,
+        "toughness": 3100,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 47,
+        "name": "Lava Elemental",
+        "set": "Base Set",
+        "cardNumber": 47,
+        "type": "Creature",
+        "power": 4800,
+        "toughness": 4300,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 48,
+        "name": "Enchanted Bow",
+        "set": "Base Set",
+        "cardNumber": 48,
+        "type": "Artifact",
+        "rarity": "Rare",
+        "cost": 4
+      },
+      {
+        "id": 49,
+        "name": "Serpentine Hydra",
+        "set": "Base Set",
+        "cardNumber": 49,
+        "type": "Creature",
+        "power": 5000,
+        "toughness": 4500,
+        "rarity": "Uncommon",
+        "cost": 4
+      },
+      {
+        "id": 50,
+        "name": "Cleansing Light",
+        "set": "Base Set",
+        "cardNumber": 50,
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "cost": 3
+      },
+      {
+        "id": 51,
+        "name": "Shadowstep Rogue",
+        "set": "Base Set",
+        "cardNumber": 51,
+        "type": "Creature",
+        "power": 3400,
+        "toughness": 3000,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 52,
+        "name": "Cursed Blade",
+        "set": "Base Set",
+        "cardNumber": 52,
+        "type": "Artifact",
+        "rarity": "Rare",
+        "cost": 4
+      },
+      {
+        "id": 53,
+        "name": "Blizzard",
+        "set": "Base Set",
+        "cardNumber": 53,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 54,
+        "name": "Forest Guardian",
+        "set": "Base Set",
+        "cardNumber": 54,
+        "type": "Creature",
+        "power": 4200,
+        "toughness": 3800,
+        "rarity": "Common",
+        "cost": 4
+      },
+      {
+        "id": 55,
+        "name": "Arcane Scholar",
+        "set": "Base Set",
+        "cardNumber": 55,
+        "type": "Creature",
+        "power": 3200,
+        "toughness": 2800,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 56,
+        "name": "Flamestrike",
+        "set": "Base Set",
+        "cardNumber": 56,
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "cost": 4
+      },
+      {
+        "id": 57,
+        "name": "Storm Elemental",
+        "set": "Base Set",
+        "cardNumber": 57,
+        "type": "Creature",
+        "power": 5000,
+        "toughness": 4500,
+        "rarity": "Uncommon",
+        "cost": 5
+      },
+      {
+        "id": 58,
+        "name": "Spectral Knight",
+        "set": "Base Set",
+        "cardNumber": 58,
+        "type": "Creature",
+        "power": 3600,
+        "toughness": 3100,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 59,
+        "name": "Frost Nova",
+        "set": "Base Set",
+        "cardNumber": 59,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 60,
+        "name": "Lunar Priestess",
+        "set": "Base Set",
+        "cardNumber": 60,
+        "type": "Creature",
+        "power": 4100,
+        "toughness": 3600,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 61,
+        "name": "Doomsday Cultist",
+        "set": "Base Set",
+        "cardNumber": 61,
+        "type": "Creature",
+        "power": 3800,
+        "toughness": 3300,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 62,
+        "name": "Boulder Crusher",
+        "set": "Base Set",
+        "cardNumber": 62,
+        "type": "Creature",
+        "power": 6000,
+        "toughness": 5500,
+        "rarity": "Uncommon",
+        "cost": 5
+      },
+      {
+        "id": 63,
+        "name": "Arcane Barrier",
+        "set": "Base Set",
+        "cardNumber": 63,
+        "type": "Enchantment",
+        "rarity": "Rare",
+        "cost": 5
+      },
+      {
+        "id": 64,
+        "name": "Thunderclap",
+        "set": "Base Set",
+        "cardNumber": 64,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 65,
+        "name": "Mystic Owl",
+        "set": "Base Set",
+        "cardNumber": 65,
+        "type": "Creature",
+        "power": 3500,
+        "toughness": 3000,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 66,
+        "name": "Inferno Dragon",
+        "set": "Base Set",
+        "cardNumber": 66,
+        "type": "Creature",
+        "power": 5200,
+        "toughness": 4700,
+        "rarity": "Uncommon",
+        "cost": 4
+      },
+      {
+        "id": 67,
+        "name": "Tidal Wave",
+        "set": "Base Set",
+        "cardNumber": 67,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 68,
+        "name": "Silver Knight",
+        "set": "Base Set",
+        "cardNumber": 68,
+        "type": "Creature",
+        "power": 4500,
+        "toughness": 4000,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 69,
+        "name": "Solar Flare",
+        "set": "Base Set",
+        "cardNumber": 69,
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "cost": 4
+      },
+      {
+        "id": 70,
+        "name": "Dreadful Gargoyle",
+        "set": "Base Set",
+        "cardNumber": 70,
+        "type": "Creature",
+        "power": 4800,
+        "toughness": 4200,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 71,
+        "name": "Cursed Tome",
+        "set": "Base Set",
+        "cardNumber": 71,
+        "type": "Enchantment",
+        "rarity": "Rare",
+        "cost": 4
+      },
+      {
+        "id": 72,
+        "name": "Flame Imp",
+        "set": "Base Set",
+        "cardNumber": 72,
+        "type": "Creature",
+        "power": 3200,
+        "toughness": 2800,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 73,
+        "name": "Harvest Druid",
+        "set": "Base Set",
+        "cardNumber": 73,
+        "type": "Creature",
+        "power": 4000,
+        "toughness": 3500,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 74,
+        "name": "Searing Blaze",
+        "set": "Base Set",
+        "cardNumber": 74,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 76,
+        "name": "Ancient Relic",
+        "set": "Base Set",
+        "cardNumber": 76,
+        "type": "Artifact",
+        "rarity": "Rare",
+        "cost": 4
+      },
+      {
+        "id": 77,
+        "name": "Frostbite Archer",
+        "set": "Base Set",
+        "cardNumber": 77,
+        "type": "Creature",
+        "power": 3400,
+        "toughness": 3000,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 78,
+        "name": "Blessed Healer",
+        "set": "Base Set",
+        "cardNumber": 78,
+        "type": "Creature",
+        "power": 3800,
+        "toughness": 3300,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 79,
+        "name": "Venomous Spider",
+        "set": "Base Set",
+        "cardNumber": 79,
+        "type": "Creature",
+        "power": 2800,
+        "toughness": 2200,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 80,
+        "name": "Arcane Explosion",
+        "set": "Base Set",
+        "cardNumber": 80,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 81,
+        "name": "Ironclad Defender",
+        "set": "Base Set",
+        "cardNumber": 81,
+        "type": "Creature",
+        "power": 4200,
+        "toughness": 3700,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 82,
+        "name": "Spectral Banshee",
+        "set": "Base Set",
+        "cardNumber": 82,
+        "type": "Creature",
+        "power": 3200,
+        "toughness": 2700,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 83,
+        "name": "Tornado Elemental",
+        "set": "Base Set",
+        "cardNumber": 83,
+        "type": "Creature",
+        "power": 5800,
+        "toughness": 5300,
+        "rarity": "Uncommon",
+        "cost": 5
+      },
+      {
+        "id": 84,
+        "name": "Solar Beam",
+        "set": "Base Set",
+        "cardNumber": 84,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 85,
+        "name": "Moonlit Owl",
+        "set": "Base Set",
+        "cardNumber": 85,
+        "type": "Creature",
+        "power": 3600,
+        "toughness": 3100,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 86,
+        "name": "Lava Elemental",
+        "set": "Base Set",
+        "cardNumber": 86,
+        "type": "Creature",
+        "power": 4800,
+        "toughness": 4300,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 87,
+        "name": "Enchanted Bow",
+        "set": "Base Set",
+        "cardNumber": 87,
+        "type": "Artifact",
+        "rarity": "Rare",
+        "cost": 4
+      },
+      {
+        "id": 88,
+        "name": "Serpentine Hydra",
+        "set": "Base Set",
+        "cardNumber": 88,
+        "type": "Creature",
+        "power": 5000,
+        "toughness": 4500,
+        "rarity": "Uncommon",
+        "cost": 4
+      },
+      {
+        "id": 89,
+        "name": "Cleansing Light",
+        "set": "Base Set",
+        "cardNumber": 89,
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "cost": 3
+      },
+      {
+        "id": 90,
+        "name": "Shadowstep Rogue",
+        "set": "Base Set",
+        "cardNumber": 90,
+        "type": "Creature",
+        "power": 3400,
+        "toughness": 3000,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 91,
+        "name": "Cursed Blade",
+        "set": "Base Set",
+        "cardNumber": 91,
+        "type": "Artifact",
+        "rarity": "Rare",
+        "cost": 4
+      },
+      {
+        "id": 92,
+        "name": "Blizzard",
+        "set": "Base Set",
+        "cardNumber": 92,
+        "type": "Spell",
+        "rarity": "Rare",
+        "cost": 3
+      },
+      {
+        "id": 93,
+        "name": "Forest Guardian",
+        "set": "Base Set",
+        "cardNumber": 93,
+        "type": "Creature",
+        "power": 4200,
+        "toughness": 3800,
+        "rarity": "Common",
+        "cost": 4
+      },
+      {
+        "id": 94,
+        "name": "Arcane Scholar",
+        "set": "Base Set",
+        "cardNumber": 94,
+        "type": "Creature",
+        "power": 3200,
+        "toughness": 2800,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 95,
+        "name": "Flamestrike",
+        "set": "Base Set",
+        "cardNumber": 95,
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "cost": 4
+      },
+      {
+        "id": 96,
+        "name": "Storm Elemental",
+        "set": "Base Set",
+        "cardNumber": 96,
+        "type": "Creature",
+        "power": 5000,
+        "toughness": 4500,
+        "rarity": "Uncommon",
+        "cost": 5
+      },
+      {
+        "id": 97,
+        "name": "Spectral Knight",
+        "set": "Base Set",
+        "cardNumber": 97,
+        "type": "Creature",
+        "power": 3600,
+        "toughness": 3100,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 98,
+        "name": "Frost Nova",
+        "set": "Base Set",
+        "cardNumber": 98,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 99,
+        "name": "Lunar Priestess",
+        "set": "Base Set",
+        "cardNumber": 99,
+        "type": "Creature",
+        "power": 4100,
+        "toughness": 3600,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 100,
+        "name": "Doomsday Cultist",
+        "set": "Base Set",
+        "cardNumber": 100,
+        "type": "Creature",
+        "power": 3800,
+        "toughness": 3300,
+        "rarity": "Rare",
+        "cost": 3
+      },
+      {
+        "id": 101,
+        "name": "Lava Hound",
+        "set": "Expansion Pack",
+        "cardNumber": 1,
+        "type": "Creature",
+        "power": 4800,
+        "toughness": 4200,
+        "rarity": "Uncommon",
+        "cost": 4
+      },
+      {
+        "id": 102,
+        "name": "Crystal Elemental",
+        "set": "Expansion Pack",
+        "cardNumber": 2,
+        "type": "Creature",
+        "power": 5500,
+        "toughness": 4900,
+        "rarity": "Rare",
+        "cost": 5
+      },
+      {
+        "id": 103,
+        "name": "Arcane Archer",
+        "set": "Expansion Pack",
+        "cardNumber": 3,
+        "type": "Creature",
+        "power": 3500,
+        "toughness": 3000,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 104,
+        "name": "Frozen Spirit",
+        "set": "Expansion Pack",
+        "cardNumber": 4,
+        "type": "Creature",
+        "power": 4000,
+        "toughness": 3500,
+        "rarity": "Uncommon",
+        "cost": 3
+      },
+      {
+        "id": 105,
+        "name": "Thunderstrike",
+        "set": "Expansion Pack",
+        "cardNumber": 5,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 106,
+        "name": "Shadow Stalker",
+        "set": "Expansion Pack",
+        "cardNumber": 6,
+        "type": "Creature",
+        "power": 3200,
+        "toughness": 2700,
+        "rarity": "Rare",
+        "cost": 2
+      },
+      {
+        "id": 107,
+        "name": "Mystic Blade",
+        "set": "Expansion Pack",
+        "cardNumber": 7,
+        "type": "Artifact",
+        "rarity": "Rare",
+        "cost": 4
+      },
+      {
+        "id": 108,
+        "name": "Flare Phoenix",
+        "set": "Expansion Pack",
+        "cardNumber": 8,
+        "type": "Creature",
+        "power": 6000,
+        "toughness": 5500,
+        "rarity": "Uncommon",
+        "cost": 5
+      },
+      {
+        "id": 109,
+        "name": "Frozen Staff",
+        "set": "Expansion Pack",
+        "cardNumber": 9,
+        "type": "Artifact",
+        "rarity": "Uncommon",
+        "cost": 3
+      },
+      {
+        "id": 110,
+        "name": "Dreadlord",
+        "set": "Expansion Pack",
+        "cardNumber": 10,
+        "type": "Creature",
+        "power": 7000,
+        "toughness": 6500,
+        "rarity": "Rare",
+        "cost": 7
+      },
+      {
+        "id": 111,
+        "name": "Solar Eclipse",
+        "set": "Expansion Pack",
+        "cardNumber": 11,
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "cost": 4
+      },
+      {
+        "id": 112,
+        "name": "Tech Mage",
+        "set": "Expansion Pack",
+        "cardNumber": 12,
+        "type": "Creature",
+        "power": 4500,
+        "toughness": 4000,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 113,
+        "name": "Abyssal Serpent",
+        "set": "Expansion Pack",
+        "cardNumber": 13,
+        "type": "Creature",
+        "power": 5500,
+        "toughness": 5000,
+        "rarity": "Uncommon",
+        "cost": 4
+      },
+      {
+        "id": 114,
+        "name": "Stone Sentinel",
+        "set": "Expansion Pack",
+        "cardNumber": 14,
+        "type": "Creature",
+        "power": 4800,
+        "toughness": 4300,
+        "rarity": "Epic",
+        "cost": 3
+      },
+      {
+        "id": 115,
+        "name": "Mystic Scepter",
+        "set": "Expansion Pack",
+        "cardNumber": 15,
+        "type": "Artifact",
+        "rarity": "Rare",
+        "cost": 5
+      },
+      {
+        "id": 116,
+        "name": "Frost Nova",
+        "set": "Expansion Pack",
+        "cardNumber": 16,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 117,
+        "name": "Crystal Golem",
+        "set": "Expansion Pack",
+        "cardNumber": 17,
+        "type": "Creature",
+        "power": 5000,
+        "toughness": 4500,
+        "rarity": "Epic",
+        "cost": 4
+      },
+      {
+        "id": 118,
+        "name": "Shadowblade Assassin",
+        "set": "Expansion Pack",
+        "cardNumber": 18,
+        "type": "Creature",
+        "power": 3800,
+        "toughness": 3300,
+        "rarity": "Common",
+        "cost": 3
+      },
+      {
+        "id": 119,
+        "name": "Stormcaller Phoenix",
+        "set": "Expansion Pack",
+        "cardNumber": 19,
+        "type": "Creature",
+        "power": 5800,
+        "toughness": 5300,
+        "rarity": "Uncommon",
+        "cost": 5
+      },
+      {
+        "id": 120,
+        "name": "Eternal Flame",
+        "set": "Expansion Pack",
+        "cardNumber": 20,
+        "type": "Spell",
+        "rarity": "Rare",
+        "cost": 4
+      },
+      {
+        "id": 121,
+        "name": "Tech Wizard",
+        "set": "Expansion Pack",
+        "cardNumber": 21,
+        "type": "Creature",
+        "power": 3400,
+        "toughness": 3000,
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 122,
+        "name": "Blizzard Staff",
+        "set": "Expansion Pack",
+        "cardNumber": 22,
+        "type": "Artifact",
+        "rarity": "Uncommon",
+        "cost": 3
+      },
+      {
+        "id": 123,
+        "name": "Flamestrike Archer",
+        "set": "Expansion Pack",
+        "cardNumber": 23,
+        "type": "Creature",
+        "power": 3600,
+        "toughness": 3100,
+        "rarity": "Epic",
+        "cost": 2
+      },
+      {
+        "id": 124,
+        "name": "Soul Reaver",
+        "set": "Expansion Pack",
+        "cardNumber": 24,
+        "type": "Creature",
+        "power": 6500,
+        "toughness": 6000,
+        "rarity": "Rare",
+        "cost": 6
+      },
+      {
+        "id": 125,
+        "name": "Dark Ritual",
+        "set": "Expansion Pack",
+        "cardNumber": 25,
+        "type": "Spell",
+        "rarity": "Common",
+        "cost": 2
+      },
+      {
+        "id": 126,
+        "name": "Mighty Snail",
+        "set": "Comedy Crusaders",
+        "cardNumber": 1,
+        "type": "Creature",
+        "rarity": "Legendary",
+        "cost": 100
+      }
+    ]
+  }
+  

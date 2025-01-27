@@ -52,6 +52,12 @@ document.getElementById('sort-select').addEventListener('change', function() {
     }
 });
 
+// Handle search input
+document.getElementById('search-inventory').addEventListener('input', function(e) {
+    const query = e.target.value.toLowerCase();
+    getUserInventory(query); // Pass search query to the function
+});
+
 // Check if the user is already logged in when the page loads
 window.onload = function () {
     token = localStorage.getItem('token'); // Retrieve the token from localStorage
@@ -174,7 +180,7 @@ function getRarityPriority(rarity) {
 }
 
 // Fetch User Inventory from the server
-function getUserInventory() {
+function getUserInventory(query = '') {
     const token = localStorage.getItem('token'); // Retrieve the token from localStorage
     if (!token) {
         console.error('No token found, user is not authenticated.');
@@ -200,8 +206,8 @@ function getUserInventory() {
             return;
         }
         if (Array.isArray(data)) {
-            inventory = data;  // Store the fetched inventory
-            displayInventory(data);  // Proceed with valid array
+            const filteredInventory = data.filter(card => card.name.toLowerCase().includes(query));  // Filter cards by name
+            displayInventory(filteredInventory);  // Proceed with valid array
         } else {
             console.error("Invalid data format:", data);
         }
@@ -312,8 +318,6 @@ function displayInventory(cards) {
                         <p><strong>Toughness:</strong> ${card.toughness}</p>
                         <p><strong>Cost:</strong> ${card.cost}</p>
                     </div>
-                    <button class="edit-card" onclick="editCard(${index})">Edit</button>
-                    <button class="delete-card" onclick="deleteCard(${index})">Delete</button>
                 `;
                 inventoryList.appendChild(cardElement);
 
@@ -326,16 +330,6 @@ function displayInventory(cards) {
     } else {
         inventoryList.innerHTML = "<p>No cards in inventory</p>";  // Inform the user via UI
     }
-}
-
-// Edit card name function
-function editCard(cardId) {
-    
-}
-
-// Delete card from inventory
-function deleteCard(cardId) {
-
 }
 
 // Function to Sort Inventory based on selected criteria
@@ -624,4 +618,354 @@ function showFinalCard(card) {
 
     // Show the modal with the final card
     modal.style.display = 'flex';
+}
+
+// Navigate to the "My Cards" screen
+document.getElementById('my-cards-button').addEventListener('click', function() {
+    document.getElementById('user-dashboard').style.display = 'none';
+    document.getElementById('my-cards-screen').style.display = 'block';
+    fetchUserCards();  // Fetch the user's cards
+});
+
+// Back to the dashboard
+document.getElementById('back-to-dashboard').addEventListener('click', function() {
+    document.getElementById('my-cards-screen').style.display = 'none';
+    document.getElementById('user-dashboard').style.display = 'block';
+});
+
+// Handle search input
+document.getElementById('search-cards').addEventListener('input', function(e) {
+    const query = e.target.value.toLowerCase();
+    fetchUserCards(query); // Pass search query to the function
+});
+
+// Filter cards by type
+document.getElementById('filter-cards').addEventListener('change', function() {
+    const filterValue = this.value;
+    fetchUserCards('', filterValue);  // Fetch cards based on filter
+});
+
+// Function to fetch user cards and filter them
+function fetchUserCards(searchQuery = '', filter = 'all') {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.error('No token found');
+        return;
+    }
+
+    fetch('/cardsUsers', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch user cards');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Cards data received:', data);  // Log the data to see what's returned
+        filterAndDisplayCards(data, searchQuery, filter);
+    })
+    .catch(err => {
+        console.error('Error fetching cards:', err);
+    });
+}
+
+// Function to filter and display cards based on search query and filter
+function filterAndDisplayCards(cards, searchQuery, filter) {
+    const userCardsList = document.getElementById('user-cards-list');
+    userCardsList.innerHTML = '';  // Clear current list
+
+    const token = localStorage.getItem('token');
+    if (token) {
+        const payload = JSON.parse(atob(token.split('.')[1]));  // Decode the JWT token payload
+        loggedInUsername = payload.username;  // Assuming the username is stored in the payload
+    }
+
+    // Filter the cards based on search query and filter type
+    const filteredCards = cards.filter(card => {
+        const matchesSearchQuery = card.name.toLowerCase().includes(searchQuery);
+
+        // Handle "all" filter - show all cards
+        const matchesFilter = filter === 'all' || card.type === filter;
+
+        // Handle "mine" filter - show only cards created by the logged-in user
+        const matchesMine = filter === 'mine' && card.username === loggedInUsername;
+
+        // If the filter is 'all', return all cards that match the search query
+        if (filter === 'all') {
+            return matchesSearchQuery;  // Only check search query
+        }
+
+        // If the filter is 'mine', return cards created by the logged-in user that match the search query
+        if (filter === 'mine') {
+            return matchesSearchQuery && matchesMine;
+        }
+
+        // For other filters, return cards that match the search query and the filter type
+        return matchesSearchQuery && matchesFilter;
+    });
+
+    if (filteredCards.length === 0) {
+        userCardsList.innerHTML = "<p>No cards available.</p>";
+    } else {
+        filteredCards.forEach(card => {
+            const rarityColor = getRarityColor(card.rarity);
+
+            const cardElement = document.createElement('div');
+            cardElement.classList.add('card');
+            cardElement.style.borderLeft = `10px solid ${rarityColor}`;
+            cardElement.style.padding = '20px';
+            cardElement.style.backgroundColor = '#fff';
+            cardElement.style.maxWidth = '300px';  // Set max width for the card
+            cardElement.style.textAlign = 'center';  // Center text in the card
+
+            // Card content HTML with creator info
+            cardElement.innerHTML = `
+                <div class="card-content">
+                    <p><strong>Name:</strong> ${card.name}</p>
+                    <p><strong>Rarity:</strong> ${card.rarity}</p>
+                    <p><strong>Type:</strong> ${card.type}</p>
+                    <p><strong>Power:</strong> ${card.power}</p>
+                    <p><strong>Toughness:</strong> ${card.toughness}</p>
+                    <p><strong>Cost:</strong> ${card.cost}</p>
+                </div>
+                <p><em>Created by: ${card.username}</em></p>  <!-- Display the creator's username -->
+            `;
+
+            // Add edit and delete buttons
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.marginTop = '10px';
+
+            if (card.username == loggedInUsername) {
+                buttonContainer.innerHTML = `
+                    <button onclick="editCard('${card.id}')">Edit</button>
+                    <button onclick="deleteCard('${card.id}')">Delete</button>
+                `;
+            }
+
+            cardElement.appendChild(buttonContainer);
+
+            // Append the card element to the user cards list
+            userCardsList.appendChild(cardElement);
+        });
+    }
+}
+
+function editCard(cardId) {
+    console.log("Fetching card with ID:", cardId);  // Log the card ID
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.error('No token found');
+        return;
+    }
+
+    // Fetch all cards from the server
+    fetch('/cardsUsers', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error fetching cards: ${response.statusText}`);
+        }
+        return response.json();  // The response will contain the cards array
+    })
+    .then(cards => {
+        console.log('Fetched cards:', cards);  // Log all fetched cards
+
+        // Find the card with the matching ID
+        const card = cards.find(c => c.id == cardId);  // Find the card by its ID
+        if (card) {
+            console.log('Fetched card:', card);  // Log the fetched card
+            // Prefill the edit form with the card details
+            document.getElementById('edit-card-name').value = card.name;
+            document.getElementById('edit-card-set').value = card.set;
+            document.getElementById('edit-card-number').value = card.cardNumber;
+            document.getElementById('edit-card-type').value = card.type;
+            document.getElementById('edit-card-rarity').value = card.rarity;
+            document.getElementById('edit-card-cost').value = card.cost;
+
+            // Show the edit form
+            document.getElementById('edit-card-form').style.display = 'block';
+
+            // Hide the add card form
+            document.getElementById('add-card-form').style.display = 'none';
+
+            // Bind the form submission after filling the data
+            bindUpdateFormSubmission(card.id);  // Pass the card ID to the form submission handler
+        } else {
+            console.error(`Card with ID ${cardId} not found`);
+            alert('Card not found.');
+        }
+    })
+    .catch(err => {
+        console.error('Error fetching card:', err);
+        alert('Error fetching card data.');
+    });
+}
+
+function bindUpdateFormSubmission(cardId) {
+    const token = localStorage.getItem('token');
+
+    document.getElementById('edit-card-form').onsubmit = function(e) {
+        e.preventDefault();
+
+        // Get updated values from the form
+        const updatedCard = {
+            name: document.getElementById('edit-card-name').value,
+            set: document.getElementById('edit-card-set').value,
+            cardNumber: document.getElementById('edit-card-number').value,
+            type: document.getElementById('edit-card-type').value,
+            rarity: document.getElementById('edit-card-rarity').value,
+            cost: document.getElementById('edit-card-cost').value
+        };
+
+        // Send the updated card data to the server
+        fetch(`/cardsUsers/${cardId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(updatedCard)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(`Error updating card: ${text}`);
+                });
+            }
+            return response.json();
+        })
+        .then(updatedCardData => {
+            console.log('Updated card:', updatedCardData);
+            alert('Card updated successfully!');
+            fetchUserCards();  // Refresh the cards list
+            document.getElementById('edit-card-form').style.display = 'none';  // Hide form after submission
+        })
+        .catch(err => {
+            console.error('Error updating card:', err);
+            alert('Error updating card.');
+        });
+    };
+}
+
+// Delete card
+function deleteCard(cardId) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.error('No token found');
+        return;
+    }
+
+    const isConfirmed = window.confirm('Are you sure you want to delete this card?');
+
+    if (!isConfirmed) {
+        console.log('Card deletion canceled');
+        return;
+    }
+
+    fetch(`/cardsUsers/${cardId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => { 
+                throw new Error(`Error: ${response.status} - ${text}`);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data && data.success) {
+            alert('Card deleted');
+            fetchUserCards();  // Refresh the card list after deletion
+        } else {
+            console.error('Error deleting card: No success flag in response', data);
+        }
+    })
+    .catch(err => {
+        console.error('Error:', err);
+    });
+}
+
+// Show the "Add New Card" form when the button is clicked
+document.getElementById('create-new-card-button').addEventListener('click', function() {
+    document.getElementById('add-card-form').style.display = 'block';
+});
+
+// Handle card creation form submission
+document.getElementById('add-card-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Get values from the form
+    const name = document.getElementById('card-name').value;
+    const set = document.getElementById('card-set').value;
+    const cardNumber = document.getElementById('card-number').value;
+    const type = document.getElementById('card-type').value;
+    const rarity = document.getElementById('card-rarity').value;
+    const cost = document.getElementById('card-cost').value;
+
+    // Create card data object
+    const newCard = {
+        name: name,
+        set: set,
+        cardNumber: cardNumber,
+        type: type,
+        rarity: rarity,
+        cost: cost
+    };
+
+    // Send the new card data to the server
+    addCardToJson(newCard);
+
+    // Hide the form after submission
+    document.getElementById('add-card-form').style.display = 'none';
+});
+
+// Function to add card data to JSON
+function addCardToJson(cardData) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.error("No token found, user is not authenticated.");
+        return;
+    }
+
+    // Send the request to the server to add the card to the cards.json
+    fetch('/cardsUsers', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(cardData)  // Send the card data without the `id`
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.id) {
+            console.log("Card added:", data);
+            // Optionally, refresh the UI with the new card
+            fetchUserCards();  // Refresh the list of cards after adding the new one
+        } else {
+            console.error("Error adding card:", data.error);
+        }
+    })
+    .catch(err => {
+        console.error("Error adding card to inventory:", err);
+    });
 }
