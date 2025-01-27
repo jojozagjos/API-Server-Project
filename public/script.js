@@ -733,7 +733,7 @@ function filterAndDisplayCards(cards, searchQuery, filter) {
                     <p><strong>Toughness:</strong> ${card.toughness}</p>
                     <p><strong>Cost:</strong> ${card.cost}</p>
                 </div>
-                <p><em>Created by: ${card.username}</em></p>  <!-- Display the creator's username -->
+                <p><em>Created by: ${card.username || 'Game Creator'}</em></p>
             `;
 
             // Add edit and delete buttons
@@ -901,7 +901,8 @@ function deleteCard(cardId) {
 
 // Show the "Add New Card" form when the button is clicked
 document.getElementById('create-new-card-button').addEventListener('click', function() {
-    document.getElementById('add-card-form').style.display = 'block';
+    document.getElementById('add-card-form').style.display = 'block';''
+    document.getElementById('my-cards-screen').style.display = 'none';
 });
 
 // Handle card creation form submission
@@ -931,6 +932,7 @@ document.getElementById('add-card-form').addEventListener('submit', function(e) 
 
     // Hide the form after submission
     document.getElementById('add-card-form').style.display = 'none';
+    document.getElementById('my-cards-screen').style.display = 'block';
 });
 
 // Function to add card data to JSON

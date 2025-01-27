@@ -11,7 +11,7 @@ h2, h3 {
     text-align: center;
 }
 
-#login-form, #create-account-form, #user-dashboard {
+#login-form, #create-account-form, #user-dashboard, #my-cards-screen {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -60,7 +60,7 @@ button:hover {
     border-radius: 8px;
 }
 
-#inventory-list {
+#inventory-list, #user-cards-list{
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -76,7 +76,7 @@ button:hover {
     position: relative;
     font-size: 80%;
     width: 150px;
-    height: 200px;
+    height: 250px;
     margin-right: 10px;
     overflow: hidden;
     border-radius: 10px;
@@ -142,4 +142,14 @@ button:hover {
     left: 50%; /* Center horizontally */
     transform: translateX(-50%) rotate(180deg); /* Center and rotate the arrow */
     z-index: 1000;
+}
+
+#user-cards-list {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
 }
