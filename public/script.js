@@ -500,7 +500,7 @@ function getRandomCards(cards) {
 
 // Pity system parameters
 let spinsSinceLastRare = 0; // Counter for spins since the last rare card
-const pityThreshold = 1; // After how many spins the pity increases
+const pityThreshold = 50; // After how many spins the pity increases
 const pityMultiplier = 0.05; // How much the drop rates increase each pity cycle
 
 // Select a random card based on the rarity drop rates
