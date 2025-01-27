@@ -148,7 +148,7 @@ function getRarityColor(rarity) {
     }
 }
 
-const rarityDropRates = {
+var rarityDropRates = {
     'Common': 0.5,   // 50% chance
     'Uncommon': 0.3, // 30% chance
     'Rare': 0.15,    // 15% chance
